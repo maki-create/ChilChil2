@@ -9,7 +9,10 @@ st.markdown("""
         gap: 10px;
     }
     </style>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True
+with st.sidebar:
+    st.empty()  # 何も表示しない
+)
 
 # スコア計算関数
 def calculate_result(answers, label1, label2):
