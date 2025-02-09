@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Drive 検索</title>
+</head>
+<body>
+    <h1>Google Drive 内を検索</h1>
+    <form method="GET" action="{% url 'search_files' %}">
+        <input type="text" name="keyword" placeholder="検索キーワードを入力" value="{{ request.GET.keyword }}">
+        <button type="submit">検索</button>
+    </form>
+    
+
+    <h2>検索結果</h2>
+    {% if results %}
+        <ul>
+            {% for result in results %}
+                <li>
+                    <a href="{{ result.link }}" target="_blank">{{ result.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>検索結果なし</p>
+    {% endif %}
+</body>
+</html>
