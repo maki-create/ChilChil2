@@ -10,3 +10,7 @@ st.markdown("""
 st.title("診断結果: ISTJ")
 
 st.write("あなたは戦略的な思考を持ち、長期的な視野で物事を計画するタイプです。")
+
+# 「元のアプリに戻る」ボタン
+if st.button("元のアプリに戻る"):
+    st.switch_page("app.py")  # app.py に戻る
