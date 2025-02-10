@@ -11,6 +11,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+        section[data-testid="stSidebar"] {display: none;}
+    </style>
+    """, unsafe_allow_html=True)
+
+
 # スコア計算関数
 def calculate_result(answers, label1, label2):
     score1 = sum(1 for ans in answers if ans == '〇')
