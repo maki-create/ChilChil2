@@ -78,6 +78,8 @@ categories = {
      "カテゴリー4": ["推しに熱愛が出たら即座に降りる", "推しに熱愛が出たら即座に降りる", "推しに熱愛が出たら即座に降りる"]
 }
 
+responses = []  # 初期化を追加
+
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
         col1, col2 = st.columns([2, 3])  # 質問とラジオボタンを横並びにする
@@ -88,7 +90,6 @@ for category, questions in categories.items():
             response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], 
                                 key=f"{category}_{idx}", horizontal=True)  # 4択に変更
             responses.append(response)
-
 
 if st.button("診断を実行"):
     result_I_E = calculate_result(responses[0:3], "I", "E")
@@ -111,4 +112,4 @@ if st.button("診断を実行"):
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
 
     # 診断結果のページに遷移
-    st.switch_page(f"pages/{final_result}.py")
+    st.experimental_rerun()  # ページ遷移を行う代わりにリロードを行います
