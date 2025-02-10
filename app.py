@@ -3,6 +3,12 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
+st.markdown("""
+    <style>
+        section[data-testid="stSidebar"] {display: none;}
+    </style>
+    """, unsafe_allow_html=True)
+
 # Streamlit Secretsから情報を取得
 google_credentials = st.secrets["google_credentials"]
 
