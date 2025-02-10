@@ -1,4 +1,17 @@
 import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
+
+# Google Sheets APIの認証情報を設定
+creds_path = "C:/Users/81908/Downloads/aerial-antonym-444302-f9-9ff7a2c99cca.json"  # 認証JSONのパス
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+client = gspread.authorize(creds)
+
+# Googleスプレッドシートを開く（シートのURLまたはIDを指定）
+spreadsheet_id = "1eKhD929QC8fdvse2G92woknfWh7Dnv7Pmi2w1ZqXWCM"  # ★ここにスプレッドシートのIDを入れる
+sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
 # CSSでラジオボタンの配置を調整
 st.markdown("""
@@ -10,13 +23,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        section[data-testid="stSidebar"] {display: none;}
-    </style>
-    """, unsafe_allow_html=True)
-
 
 # スコア計算関数
 def calculate_result(answers, label1, label2):
@@ -62,6 +68,12 @@ if st.button("診断を実行"):
 
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
+
+    # 現在の日時を取得
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # スプレッドシートに診断結果を書き込む
+    sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result])
 
     # 診断結果のページに遷移
     st.switch_page(f"pages/{final_result}.py")
