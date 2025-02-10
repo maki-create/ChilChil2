@@ -1,3 +1,27 @@
+import os
+import json
+from oauth2client.service_account import ServiceAccountCredentials
+
+# Streamlit Secretsから情報を取得
+google_credentials = st.secrets["google_credentials"]
+
+# TOMLの設定情報を辞書として利用
+creds_dict = {
+    "type": google_credentials["type"],
+    "project_id": google_credentials["project_id"],
+    "private_key_id": google_credentials["private_key_id"],
+    "private_key": google_credentials["private_key"],
+    "client_email": google_credentials["client_email"],
+    "client_id": google_credentials["client_id"],
+    "auth_uri": google_credentials["auth_uri"],
+    "token_uri": google_credentials["token_uri"],
+    "auth_provider_x509_cert_url": google_credentials["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": google_credentials["client_x509_cert_url"],
+}
+
+# Google Sheets API認証を設定
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
