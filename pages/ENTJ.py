@@ -13,4 +13,6 @@ st.write("あなたは戦略的な思考を持ち、長期的な視野で物事�
 
 # ホームに戻るボタン
 if st.button("ホームに戻る"):
-    st.switch_page("Home")  # `app.py` に戻る
+    st.switch_page("app.py")  # `app.py` に戻る
+
+
