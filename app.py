@@ -96,10 +96,11 @@ if st.button("診断を実行"):
     # 現在の日時を取得
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # スプレッドシートに診断結果を書き込む
+    # 解答内容を一緒に記録する
     try:
-        sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result])
-        st.success("診断結果がスプレッドシートに記録されました！")
+        # ユーザーの解答と診断結果をスプレッドシートに記録
+        sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result] + responses)
+        st.success("診断結果と解答がスプレッドシートに記録されました！")
     except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
 
