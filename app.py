@@ -79,15 +79,14 @@ categories = {
 }
 
 responses = []
-
-for category, questions in categories.items():
-    st.subheader(f"{category}")  # この部分を削除またはコメントアウトする
+for questions in categories.values():
     for q in questions:
         col1, col2 = st.columns([2, 3])  # 質問とラジオボタンを横並びにする
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], key=f"{category}_{q}", horizontal=True)  # 4択に変更
+            # ユニークなキーを作成するために、質問内容だけを使う
+            response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], key=q, horizontal=True)  # 4択に変更
             responses.append(response)
 
 if st.button("診断を実行"):
