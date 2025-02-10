@@ -82,7 +82,7 @@ responses = []  # 初期化を追加
 
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
-        col1, col2 = st.columns([2, 3])  # 質問とラジオボタンを横並びにする
+        col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
