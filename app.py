@@ -1,6 +1,6 @@
-import os
-import json
-from oauth2client.service_account import ServiceAccountCredentials
+import gspread
+from google.auth.transport.requests import Request
+from google.oauth2.service_account import Credentials
 
 # Streamlit Secretsから情報を取得
 google_credentials = st.secrets["google_credentials"]
@@ -24,7 +24,6 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
 import streamlit as st
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # Google Sheets APIの認証情報を設定
