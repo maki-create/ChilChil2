@@ -11,21 +11,27 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# スコア計算関数
+# スコア計算関数（スコアルール変更）
 def calculate_result(answers, label1, label2):
-    score1 = sum(1 for ans in answers if ans == '〇')
-    score2 = sum(1 for ans in answers if ans == '×')
+    score_mapping = {
+        "当てはまる": 2,
+        "当てはまらない": -2,
+        "どちらでもない": 1,
+        "意味が分からない": 0
+    }
+    
+    total_score = sum(score_mapping[ans] for ans in answers)
 
-    if score1 > score2:
+    if total_score > 0:
         return label1
-    elif score2 > score1:
+    elif total_score < 0:
         return label2
     else:
-        return f"{label1}, {label2}"
+        return label1  # カンマを避けるため、同点の場合は label1 を優先
 
 # Streamlit UI
 st.title("性格診断アプリ")
-st.write("各質問に対して「〇」または「×」を選んでください。")
+st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「意味が分からない」の中から選んでください。")
 
 # 質問データ
 categories = {
@@ -44,7 +50,7 @@ for category, questions in categories.items():
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            response = st.radio("", ["〇", "×"], key=f"{category}_{q}", horizontal=True)  # 選択肢を横並びに
+            response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], key=f"{category}_{q}", horizontal=True)  # 4択に変更
             responses.append(response)
 
 if st.button("診断を実行"):
@@ -56,5 +62,6 @@ if st.button("診断を実行"):
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
 
-    # 診断結果のページに遷移
+    # 診断結果のページに遷移（カンマが入らないよう修正済み）
     st.switch_page(f"pages/{final_result}.py")
+
