@@ -82,7 +82,7 @@ responses = []  # 初期化を追加
 
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
-        col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
+        col1, col2 = st.columns([2, 3])  # 質問とラジオボタンを横並びにする
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
@@ -90,6 +90,10 @@ for category, questions in categories.items():
             response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], 
                                 key=f"{category}_{idx}", horizontal=True)  # 4択に変更
             responses.append(response)
+
+        # 質問と質問の間に改行を入れる
+        st.markdown("<br>", unsafe_allow_html=True)  # 改行タグを使って1行空ける
+
 
 if st.button("診断を実行"):
     result_I_E = calculate_result(responses[0:3], "I", "E")
