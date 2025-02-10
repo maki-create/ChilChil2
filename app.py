@@ -3,6 +3,32 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# Streamlit Secretsから情報を取得
+google_credentials = st.secrets["google_credentials"]
+
+# TOMLの設定情報を辞書として利用
+creds_dict = {
+type = "service_account"
+project_id = "aerial-antonym-444302-f9"
+private_key_id = "e820019c59356e62d1609fe32a5543a8bb810146"
+private_key = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCgZ7G8aGzl4rhF\nIPgWfBqxblSd/dAI1cuPXQsQ5ruHT7WjBSzo0r5Hb+o3WhyWcDTftGcQ6ESm4jNx\nN5ErKAl9NWet80oarv18E4Iq0aAGNH24V2FcWBuRqBAFVJzVaPSOcwwieyVxDcb6\nzpZViTFxqG0I/5unKOhF50rLCpFMNU6Ls5HtZU/+Sz0f1/99nUbhWa8Nr/OUxK8Q\noVGVIGFJ+V0tcbEi8ED3EtCxpcAe7NoAciUxrn2ngV43kRgrLWSoIjeokmgKhSel\nfR4WMKdqSyyv+oxHKJqGrYvtOsqn/q/FWIzEpqKGx768/5tG68XaPFvXiUiM6TIt\na7I03oOrAgMBAAECggEAIkJzgj+1fpYhcFZd1oOUOfBML2BuBe0P6KNhQS9ev0RF\nkbeBw4p7bIuZNVBQSctWZ69C0ighvZkTjqtlHJgVCsKUzeDoI3HbnxwVkaqrKJge\nf/hdyZjh7oa8QT80rhoYHbKx1U2DDjX4mUn1bvh58IIeI61gY+AHWCLR5TLxHJrx\nUfhD+wgV7y66ZxQrdKML1qWbIlnJkY6m4sg1Voj4r+nUKAKaiwa22CVclE7sErSM\nbC1u8cHpvdXOYWJZDD5199OVf2yIe4HfqWBC2S5yJKhRZuG6xPsLPS99QZdgCEOg\n2DWK+ExIb8Rj5bp/7fi6IHuJzNrx7BNrK5BJ55ukYQKBgQDZMUsqczw4CKMO2NKf\nXz6rHMQrmIN/9mLp9SlCYnaub5M3MedE0ulll1AdVgSqqEEkzqjP1xq8XXMJDU+m\nxY0SkxBBEDlHETU/M6R5FN8ZTmcxDc2fQdB4kQe9e6cygPvzpA1DuiIlF2/0Vg8S\nI6b/3IiG3vj0BsixT0CBzGDAywKBgQC9ENtsrMrXiniux4JHiFqq6rMEg8KydAxM\nJStodkMvUiVUuReTk6CWWqBw9Oi+AzEfodh+JNZtcrPOs3SUh0cfFAbYxlgpRGZy\nMVeqo6MU2eLnHmam+rjG2UurlVjuIFdm16V7uQa/u0gtkBLJvn5WDwKNOaivnvdg\nSU5qDDtMoQKBgHAMQCzsOjrmKcj1DuPtbRU1x/Z9vgl8ANeWBO0cgwHGyfoForwc\n2w/wGgKoZ8vq9YCZpPlkjYRz6W7YESmGbRsSB6apSgNh20h5yfY1UEtr6UyjRFtO\nxtAMciPM8Rra9CBjl/xCwG7GQpmY9Dl1byg8i6qYyXKLNWpT6oGMALY1AoGBAIPY\nK4w/ezyP3dTUYC+OENw7yxcM40sazjCTgw/X2MY5HLtWT/Cj9EqlbFkZEOzgwPL0\nJErjWXz9jhJI5rVlGN29U4D74CL3BhIAAsiGUIWL5EWT17X+Bbj1c2V2Qovcldar\n70S2JNSzv4O2gsOZSfSthvQBD3dY/d1xgXNGkFvBAoGBAJVybo+dJBe10tDIsxSZ\n4rtQePhxF8VrzMtIOybA+G3678cVvOCjrOP2Ho/U41iQTzy6uW4b3ajAID4djV82\nR44pR/9b16efpB7JGfePTShXF6tIGQKLKDKQ6aJUIELIFNnLbfzhmDE0w7cxEeSb\nOCJ3Uf6rsJ26o4E1rNwdpWrE\n-----END PRIVATE KEY-----\n"
+client_email = "service-account@aerial-antonym-444302-f9.iam.gserviceaccount.com"
+client_id = "100259023955694299607"
+auth_uri = "https://accounts.google.com/o/oauth2/auth"
+token_uri = "https://oauth2.googleapis.com/token"
+auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs"
+client_x509_cert_url = "https://www.googleapis.com/robot/v1/metadata/x509/service-account%40aerial-antonym-444302-f9.iam.gserviceaccount.com"
+}
+
+# Google Sheets API認証を設定
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(creds)
+
+
 # Google Sheets APIの認証情報を設定
 creds_path = "C:/Users/81908/Downloads/aerial-antonym-444302-f9-9ff7a2c99cca.json"  # 認証JSONのパス
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
