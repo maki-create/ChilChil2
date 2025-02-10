@@ -1,23 +1,20 @@
 import streamlit as st
 
-# CSSでラジオボタンを横並びにする
+# CSSでラジオボタンのラベルを横並びにする
 st.markdown("""
     <style>
-    div[data-testid="stRadio"] > div {
-        display: flex;
-        justify-content: space-evenly;
-        gap: 10px;
+    div[data-testid="stRadio"] label {
+        display: inline-flex;
+        margin-right: 20px;
     }
     </style>
-""", unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
 st.markdown("""
     <style>
         section[data-testid="stSidebar"] {display: none;}
     </style>
-    """, unsafe_allow_html=True)
-
+""", unsafe_allow_html=True)
 
 # スコア計算関数
 def calculate_result(answers, label1, label2):
@@ -48,8 +45,15 @@ responses = []
 for category, questions in categories.items():
     st.subheader(f"{category}")
     for q in questions:
-        response = st.radio(f"**{q}**", ["〇", "×"], key=f"{category}_{q}")
-        responses.append(response)
+        col1, col2, col3 = st.columns([3, 1, 1])  # 質問、〇、×の3列を作成
+
+        with col1:
+            st.write(f"**{q}**")  # 質問を左側に表示
+        with col2:
+            if st.radio(f"{q}_〇", ["〇", "×"], index=0, key=f"{category}_{q}") == "〇":
+                responses.append("〇")
+            else:
+                responses.append("×")
 
 if st.button("診断を実行"):
     result_I_E = calculate_result(responses[0:3], "I", "E")
@@ -60,5 +64,5 @@ if st.button("診断を実行"):
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
 
-    # 診断結果のページに遷移
-    st.switch_page(f"pages/{final_result}.py")
+    st.write(f"診断結果: **{final_result}**")
+
