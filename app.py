@@ -1,18 +1,13 @@
 import streamlit as st
 
-# CSSでラジオボタンのラベルを横並びにする
+# CSSでラジオボタンの配置を調整
 st.markdown("""
     <style>
-    div[data-testid="stRadio"] label {
-        display: inline-flex;
-        margin-right: 20px;
+    div[data-testid="stRadio"] > label {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
     }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        section[data-testid="stSidebar"] {display: none;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -45,15 +40,12 @@ responses = []
 for category, questions in categories.items():
     st.subheader(f"{category}")
     for q in questions:
-        col1, col2, col3 = st.columns([3, 1, 1])  # 質問、〇、×の3列を作成
-
+        col1, col2 = st.columns([2, 3])  # 質問とラジオボタンを横並びにする
         with col1:
-            st.write(f"**{q}**")  # 質問を左側に表示
+            st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            if st.radio("", ["〇", "×"], index=0, key=f"{category}_{q}") == "〇":
-                responses.append("〇")
-            else:
-                responses.append("×")
+            response = st.radio("", ["〇", "×"], key=f"{category}_{q}", horizontal=True)  # 選択肢を横並びに
+            responses.append(response)
 
 if st.button("診断を実行"):
     result_I_E = calculate_result(responses[0:3], "I", "E")
@@ -64,4 +56,5 @@ if st.button("診断を実行"):
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
 
-    st.write(f"診断結果: **{final_result}**")
+    # 診断結果のページに遷移
+    st.switch_page(f"pages/{final_result}.py")
