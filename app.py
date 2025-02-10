@@ -1,29 +1,6 @@
-import gspread
-from google.auth.transport.requests import Request
-from google.oauth2.service_account import Credentials
-
-# Streamlit Secretsから情報を取得
-google_credentials = st.secrets["google_credentials"]
-
-# TOMLの設定情報を辞書として利用
-creds_dict = {
-    "type": google_credentials["type"],
-    "project_id": google_credentials["project_id"],
-    "private_key_id": google_credentials["private_key_id"],
-    "private_key": google_credentials["private_key"],
-    "client_email": google_credentials["client_email"],
-    "client_id": google_credentials["client_id"],
-    "auth_uri": google_credentials["auth_uri"],
-    "token_uri": google_credentials["token_uri"],
-    "auth_provider_x509_cert_url": google_credentials["auth_provider_x509_cert_url"],
-    "client_x509_cert_url": google_credentials["client_x509_cert_url"],
-}
-
-# Google Sheets API認証を設定
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-
 import streamlit as st
 import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # Google Sheets APIの認証情報を設定
@@ -33,9 +10,8 @@ creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
 client = gspread.authorize(creds)
 
 # Googleスプレッドシートを開く（シートのURLまたはIDを指定）
-spreadsheet_id = "1eKhD929QC8fdvse2G92woknfWh7Dnv7Pmi2w1ZqXWCM"  # ★ここにスプレッドシートのIDを入れる
+spreadsheet_id = "1eKhD929QC8fdvse2G92woknfWh7Dnv7Pmi2w1ZqXWCM"  # ★スプレッドシートのIDを入れる
 sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
-
 # CSSでラジオボタンの配置を調整
 st.markdown("""
     <style>
@@ -47,21 +23,27 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# スコア計算関数
+# スコア計算関数（スコアルール変更）
 def calculate_result(answers, label1, label2):
-    score1 = sum(1 for ans in answers if ans == '〇')
-    score2 = sum(1 for ans in answers if ans == '×')
+    score_mapping = {
+        "当てはまる": 2,
+        "当てはまらない": -3,
+        "どちらでもない": 1,
+        "意味が分からない": 0
+    }
+    
+    total_score = sum(score_mapping[ans] for ans in answers)
 
-    if score1 > score2:
+    if total_score > 0:
         return label1
-    elif score2 > score1:
+    elif total_score < 0:
         return label2
     else:
-        return f"{label1}, {label2}"
+        return label1  # カンマを避けるため、同点の場合は label1 を優先
 
 # Streamlit UI
 st.title("性格診断アプリ")
-st.write("各質問に対して「〇」または「×」を選んでください。")
+st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「意味が分からない」の中から選んでください。")
 
 # 質問データ
 categories = {
@@ -80,7 +62,7 @@ for category, questions in categories.items():
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            response = st.radio("", ["〇", "×"], key=f"{category}_{q}", horizontal=True)  # 選択肢を横並びに
+            response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], key=f"{category}_{q}", horizontal=True)  # 4択に変更
             responses.append(response)
 
 if st.button("診断を実行"):
@@ -96,7 +78,11 @@ if st.button("診断を実行"):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # スプレッドシートに診断結果を書き込む
-    sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result])
+    try:
+        sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result])
+        st.success("診断結果がスプレッドシートに記録されました！")
+    except Exception as e:
+        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
 
     # 診断結果のページに遷移
     st.switch_page(f"pages/{final_result}.py")
