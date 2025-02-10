@@ -21,6 +21,7 @@ creds_dict = {
   "universe_domain": "googleapis.com"
 }
 
+
 # Google Sheets API認証を設定
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
@@ -76,5 +77,31 @@ responses = []
 for category, questions in categories.items():
     st.subheader(f"{category}")
     for q in questions:
-        col
+        col1, col2 = st.columns([2, 3])  # 質問とラジオボタンを横並びにする
+        with col1:
+            st.write(f"**{q}**")  # 質問を左に配置
+        with col2:
+            response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], key=f"{category}_{q}", horizontal=True)  # 4択に変更
+            responses.append(response)
 
+if st.button("診断を実行"):
+    result_I_E = calculate_result(responses[0:3], "I", "E")
+    result_S_N = calculate_result(responses[3:6], "S", "N")
+    result_T_F = calculate_result(responses[6:9], "T", "F")
+    result_J_P = calculate_result(responses[9:12], "J", "P")
+
+    final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
+    st.session_state["final_result"] = final_result
+
+    # 現在の日時を取得
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # スプレッドシートに診断結果を書き込む
+    try:
+        sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result])
+        st.success("診断結果がスプレッドシートに記録されました！")
+    except Exception as e:
+        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+
+    # 診断結果のページに遷移
+    st.switch_page(f"pages/{final_result}.py")
