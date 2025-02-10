@@ -50,7 +50,7 @@ for category, questions in categories.items():
         with col1:
             st.write(f"**{q}**")  # 質問を左側に表示
         with col2:
-            if st.radio(f"{q}_〇", ["〇", "×"], index=0, key=f"{category}_{q}") == "〇":
+            if st.radio("", ["〇", "×"], index=0, key=f"{category}_{q}") == "〇":
                 responses.append("〇")
             else:
                 responses.append("×")
@@ -65,4 +65,3 @@ if st.button("診断を実行"):
     st.session_state["final_result"] = final_result
 
     st.write(f"診断結果: **{final_result}**")
-
