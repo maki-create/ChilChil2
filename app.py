@@ -115,5 +115,5 @@ if st.button("診断を実行"):
     except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
 
-    # 診断結果のページに遷移
-    st.experimental_rerun()  # ページ遷移を行う代わりにリロードを行います
+# 診断結果のページに遷移
+    st.switch_page(f"pages/{final_result}.py")
