@@ -143,7 +143,7 @@ if st.button("診断を実行"):
     # 解答内容を一緒に記録する
     try:
         # ユーザーの解答と診断結果をスプレッドシートに記録
-        sheet.append_row([now, result_I_E_ "意味が分からないばかり答えています", result_S_N_ "意味が分からないばかり答えています", result_T_F_ "意味が分からないばかり答えています", result_J_P_ "意味が分からないばかり答えています", final_result] + responses)
+        sheet.append_row([now, result_I_E_+ "意味が分からないばかり答えています", result_S_N_ +"意味が分からないばかり答えています", result_T_F_ +"意味が分からないばかり答えています", result_J_P_ +"意味が分からないばかり答えています", final_result] + responses)
         
     except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
