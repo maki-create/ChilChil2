@@ -129,24 +129,27 @@ for category, questions in categories.items():
 
 
 if st.button("診断を実行"):
-    result_I_E = calculate_result(responses[0:9], "I", "E", "意味が分からないばかり答えています)")
-    result_S_N = calculate_result(responses[9:18], "S", "N", "意味が分からないばかり答えています)")
-    result_T_F = calculate_result(responses[18:27], "T", "F", "意味が分からないばかり答えています)")
-    result_J_P = calculate_result(responses[27:36], "J", "P", "意味が分からないばかり答えています)")
+    result_I_E = calculate_result(responses[0:9], "I", "E", "意味が分からないばかり答えています")
+    result_S_N = calculate_result(responses[9:18], "S", "N", "意味が分からないばかり答えています")
+    result_T_F = calculate_result(responses[18:27], "T", "F", "意味が分からないばかり答えています")
+    result_J_P = calculate_result(responses[27:36], "J", "P", "意味が分からないばかり答えています")
 
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
 
-    # 現在の日時を取得
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 結果に "意味が分からない" が含まれているかチェック
+    if "意味が分からない" in final_result:
+        st.warning("診断結果に「意味が分からない」が含まれています。もう一度確認してください。")
+    else:
+        # 現在の日時を取得
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # 解答内容を一緒に記録する
-    try:
-        # ユーザーの解答と診断結果をスプレッドシートに記録
-        sheet.append_row([now, result_I_E_+ "意味が分からないばかり答えています", result_S_N_ +"意味が分からないばかり答えています", result_T_F_ +"意味が分からないばかり答えています", result_J_P_ +"意味が分からないばかり答えています", final_result] + responses)
-        
-    except Exception as e:
-        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+        try:
+            # ユーザーの解答と診断結果をスプレッドシートに記録
+            sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result] + responses)
+        except Exception as e:
+            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
 
-# 診断結果のページに遷移
-    st.switch_page(f"pages/{final_result}.py")
+        # 診断結果のページに遷移
+        st.switch_page(f"pages/{final_result}.py")
+
