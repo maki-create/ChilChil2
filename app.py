@@ -129,10 +129,10 @@ for category, questions in categories.items():
 
 
 if st.button("診断を実行"):
-    result_I_E = calculate_result(responses[0:9], "I", "E", "不明:意味が分からないばかり答えています)")
-    result_S_N = calculate_result(responses[10:18], "S", "N", "不明:意味が分からないばかり答えています)")
-    result_T_F = calculate_result(responses[19:27], "T", "F", "不明:意味が分からないばかり答えています)")
-    result_J_P = calculate_result(responses[28:36], "J", "P", "不明:意味が分からないばかり答えています)")
+    result_I_E = calculate_result(responses[0:9], "I", "E", "意味が分からないばかり答えています)")
+    result_S_N = calculate_result(responses[10:18], "S", "N", "意味が分からないばかり答えています)")
+    result_T_F = calculate_result(responses[19:27], "T", "F", "意味が分からないばかり答えています)")
+    result_J_P = calculate_result(responses[28:36], "J", "P", "意味が分からないばかり答えています)")
 
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
