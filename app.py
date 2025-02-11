@@ -2,6 +2,7 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import pytz
 
 st.markdown("""
     <style>
@@ -139,7 +140,8 @@ if st.button("診断を実行"):
     if "意味が分からない" in final_result:
         st.warning("「意味が分からない」ばかり答えているため、診断が実行できません")
     else:
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        st = pytz.timezone('Asia/Tokyo')
+         now = datetime.now(pytz.utc).astimezone(jst).strftime("%Y-%m-%d %H:%M:%S")
 
         try:
             sheet.append_row([now, final_result[0], final_result[1], final_result[2], final_result[3], final_result] + responses)
