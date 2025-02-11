@@ -64,15 +64,15 @@ def calculate_result(answers, label1, label2):
     elif total_score < 0:
         return label2
     else:
-        return label1  # カンマを避けるため、同点の場合は label1 を優先
+        return print("意味が分からないばかり答えているため診断できませんでした") # カンマを避けるため、同点の場合は label1 を優先
 
 # Streamlit UI
 st.title("性格診断アプリ")
 st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「意味が分からない」の中から選んでください。")
 
-# 質問データ
+# 質問
 categories = {
-     "カテゴリー1": [
+     "IかEか": [
                 "質問1", 
                 "質問2", 
                 "質問3",
@@ -144,7 +144,7 @@ if st.button("診断を実行"):
     try:
         # ユーザーの解答と診断結果をスプレッドシートに記録
         sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result] + responses)
-        st.success("診断結果と解答がスプレッドシートに記録されました！")
+        
     except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
 
