@@ -137,7 +137,7 @@ if st.button("診断を実行"):
 
     final_result = st.session_state["final_result"]  # ローカル変数に保存
 
-   if "意味が分からない" in final_result:
+    if "意味が分からない" in final_result:
         st.warning("「意味が分からない」ばかり答えているため、診断が実行できません")
     else:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -149,3 +149,4 @@ if st.button("診断を実行"):
             st.stop()
 
         st.switch_page(f"pages/{final_result}.py")
+
