@@ -49,7 +49,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # スコア計算関数（スコアルール変更）
-def calculate_result(answers, label1, label2):
+def calculate_result(answers, label1, label2,label3):
     score_mapping = {
         "当てはまる": 2,
         "当てはまらない": -3,
