@@ -64,7 +64,7 @@ def calculate_result(answers, label1, label2):
     elif total_score < 0:
         return label2
     else:
-        return print("意味が分からないばかり答えているため診断できませんでした") # カンマを避けるため、同点の場合は label1 を優先
+        return label3 # カンマを避けるため、同点の場合は label1 を優先
 
 # Streamlit UI
 st.title("性格診断アプリ")
