@@ -130,9 +130,9 @@ for category, questions in categories.items():
 
 if st.button("診断を実行"):
     result_I_E = calculate_result(responses[0:9], "I", "E", "不明:意味が分からないばかり答えています)")
-    result_S_N = calculate_result(responses[9:18], "S", "N", "不明:意味が分からないばかり答えています)")
-    result_T_F = calculate_result(responses[18:27], "T", "F", "不明:意味が分からないばかり答えています)")
-    result_J_P = calculate_result(responses[27:36], "J", "P", "不明:意味が分からないばかり答えています)")
+    result_S_N = calculate_result(responses[10:18], "S", "N", "不明:意味が分からないばかり答えています)")
+    result_T_F = calculate_result(responses[19:27], "T", "F", "不明:意味が分からないばかり答えています)")
+    result_J_P = calculate_result(responses[28:36], "J", "P", "不明:意味が分からないばかり答えています)")
 
     final_result = f"{result_I_E}{result_S_N}{result_T_F}{result_J_P}"
     st.session_state["final_result"] = final_result
@@ -143,7 +143,7 @@ if st.button("診断を実行"):
     # 解答内容を一緒に記録する
     try:
         # ユーザーの解答と診断結果をスプレッドシートに記録
-        sheet.append_row([now, result_I_E, result_S_N, result_T_F, result_J_P, final_result] + responses)
+        sheet.append_row([now, result_I_E_不明:意味が分からないばかり答えています, result_S_N不明:意味が分からないばかり答えています, result_T_F不明:意味が分からないばかり答えています, result_J_P不明:意味が分からないばかり答えています, final_result] + responses)
         
     except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
