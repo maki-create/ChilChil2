@@ -137,11 +137,10 @@ if st.button("診断を実行"):
 
     final_result = st.session_state["final_result"]  # ローカル変数に保存
 
-    if "意味が分からない" in final_result:
+   if "意味が分からない" in final_result:
         st.warning("「意味が分からない」ばかり答えているため、診断が実行できません")
     else:
-        st = pytz.timezone('Asia/Tokyo')
-         now = datetime.now(pytz.utc).astimezone(jst).strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         try:
             sheet.append_row([now, final_result[0], final_result[1], final_result[2], final_result[3], final_result] + responses)
@@ -150,4 +149,3 @@ if st.button("診断を実行"):
             st.stop()
 
         st.switch_page(f"pages/{final_result}.py")
-
