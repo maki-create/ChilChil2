@@ -149,12 +149,12 @@ final_result = st.session_state["final_result"]  # ローカル変数に保存
 
 if "意味が分からない" in final_result:
         st.warning("「意味が分からない」ばかり答えているため、診断が実行できません")
-    else:
+else:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        try:
+    try:
             sheet.append_row([now, final_result[0], final_result[1], final_result[2], final_result[3], final_result] + responses)
-        except Exception as e:
+    except Exception as e:
             st.error(f"スプレッドシートへの記録に失敗しました: {e}")
             st.stop()
 
