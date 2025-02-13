@@ -141,9 +141,9 @@ for category, questions in categories.items():
 if st.button("診断を実行"):
     st.session_state["final_result"] = (
         f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
-        f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からないばかり答えています')}"
-        f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からないばかり答えています')}"
-        f"{calculate_result(responses[27:36], 'J', 'P', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
         f"{calculate_result(responses[36:45], 'A', 'B', '意味が分からないばかり答えています')}"
     )
     
