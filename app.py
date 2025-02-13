@@ -138,12 +138,12 @@ for category, questions in categories.items():
         st.markdown("<br>", unsafe_allow_html=True)  
 
 
-if st.button("診断を実行"):
-    st.session_state["final_result"] = f"{calculate_result(responses[0:9], 'I', 'E', '意味が分からないばかり答えています')}" \
-                                       f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からないばかり答えています')}" \
-   　　　　　　　　　　　　　　　　　　　 f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からないばかり答えています')}" \
-    　　　　　　　　　　　　　　　　　　f"{calculate_result(responses[18:27], 'J', 'P', '意味が分からないばかり答えています')}" \
-                                       f"{calculate_result(responses[27:36], 'A', 'B', '意味が分からないばかり答えています')}"
+st.session_state["final_result"] = f"{calculate_result(responses[0:9], 'I', 'E', '意味が分からないばかり答えています')}" \
+                                   f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からないばかり答えています')}" \
+                                   f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からないばかり答えています')}" \
+                                   f"{calculate_result(responses[18:27], 'J', 'P', '意味が分からないばかり答えています')}" \
+                                   f"{calculate_result(responses[27:36], 'A', 'B', '意味が分からないばかり答えています')}"
+
 
     final_result = st.session_state["final_result"]  # ローカル変数に保存
 
