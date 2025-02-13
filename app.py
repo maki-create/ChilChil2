@@ -110,6 +110,15 @@ categories = {
                 "質問34"
                 ,"質問35",
                 "質問36",]
+    "カテゴリー5": ["質問37",
+                "質問38",
+                "質問39",
+                "質問40",
+                "質問41",
+                "質問42",
+                "質問43"
+                ,"質問44",
+                "質問45",]
                 
 }
 
@@ -132,8 +141,9 @@ for category, questions in categories.items():
 if st.button("診断を実行"):
     st.session_state["final_result"] = f"{calculate_result(responses[0:9], 'I', 'E', '意味が分からないばかり答えています')}" \
                                        f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からないばかり答えています')}" \
-                                       f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からないばかり答えています')}" \
-                                       f"{calculate_result(responses[27:36], 'J', 'P', '意味が分からないばかり答えています')}"
+   　　　　　　　　　　　　　　　　　　　 f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からないばかり答えています')}" \
+    　　　　　　　　　　　　　　　　　　f"{calculate_result(responses[18:27], 'J', 'P', '意味が分からないばかり答えています')}" \
+                                       f"{calculate_result(responses[27:36], 'A', 'B', '意味が分からないばかり答えています')}"
 
     final_result = st.session_state["final_result"]  # ローカル変数に保存
 
