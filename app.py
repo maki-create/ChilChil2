@@ -147,7 +147,7 @@ st.session_state["final_result"] = f"{calculate_result(responses[0:9], 'I', 'E',
 
 final_result = st.session_state["final_result"]  # ローカル変数に保存
 
-    if "意味が分からない" in final_result:
+if "意味が分からない" in final_result:
         st.warning("「意味が分からない」ばかり答えているため、診断が実行できません")
     else:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
