@@ -53,9 +53,11 @@ st.markdown("""
 def calculate_result(answers, label1, label2,label3):
     score_mapping = {
         "当てはまる": 2,
+        "やや当てはまる": 1,
+        "やや当てはまらない": -1
         "当てはまらない": -2,
         "どちらでもない": 0,
-        "意味が分からない": 0
+       
     }
     
     total_score = sum(score_mapping[ans] for ans in answers)
