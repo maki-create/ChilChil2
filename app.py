@@ -38,36 +38,29 @@ client = gspread.authorize(creds)
 spreadsheet_id = "1eKhD929QC8fdvse2G92woknfWh7Dnv7Pmi2w1ZqXWCM"  # ★スプレッドシートのIDを入れる
 sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
-# CSSでラジオボタンの配置を調整
-st.markdown("""
-    <style>
-    div[data-testid="stRadio"] > label {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # スコア計算関数（スコアルール変更）
-def calculate_result(answers, label1, label2,label3):
+def calculate_result(answers, label1, label2, label3):
     score_mapping = {
         "当てはまる": 2,
         "やや当てはまる": 1,
         "あまり当てはまらない": -1,
         "当てはまらない": -2,
         "どちらでもない": 0,
-       
     }
     
     total_score = sum(score_mapping[ans] for ans in answers)
+
+    # スコアが0の場合、最初の質問のスコアを参照
+    if total_score == 0 and answers:
+        first_answer_score = score_mapping.get(answers[0], 0)
+        total_score = first_answer_score  # 最初の質問のスコアで決定
 
     if total_score > 0:
         return label1
     elif total_score < 0:
         return label2
     else:
-        return label3 # カンマを避けるため、同点の場合は label1 を優先
+        return label3
 
 # Streamlit UI
 st.title("性格診断アプリ")
@@ -132,13 +125,12 @@ for category, questions in categories.items():
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            response = st.radio("", ["当てはまる",  "やや当てはまる","あまり当てはまらない","当てはまらない", "どちらでもない"], 
+            response = st.radio("", ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
                                 key=f"{category}_{idx}", horizontal=True)  
             responses.append(response)
 
         # 質問と質問の間に改行を入れる
         st.markdown("<br>", unsafe_allow_html=True)  
-
 
 if st.button("診断を実行"):
     st.session_state["final_result"] = (
@@ -162,4 +154,4 @@ if st.button("診断を実行"):
             st.error(f"スプレッドシートへの記録に失敗しました: {e}")
             st.stop()
 
-        st.switch_page(f"pages/{final_result}.py")  # ✅ 修正後：インデント統一
+        st.switch_page(f"pages/{final_result}.py")
