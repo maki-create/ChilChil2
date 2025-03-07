@@ -132,7 +132,7 @@ for category, questions in categories.items():
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            response = st.radio("", ["当てはまる", "当てはまらない", "どちらでもない", "意味が分からない"], 
+            response = st.radio("", ["当てはまる",  "やや当てはまる","あまり当てはまらない","当てはまらない", "どちらでもない"], 
                                 key=f"{category}_{idx}", horizontal=True)  
             responses.append(response)
 
