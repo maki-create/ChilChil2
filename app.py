@@ -34,11 +34,11 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 
-# Googleスプレッドシートを開く（シートのURLまたはIDを指定）
+# Googleスプレッドシートを開く
 spreadsheet_id = "1eKhD929QC8fdvse2G92woknfWh7Dnv7Pmi2w1ZqXWCM"  # ★スプレッドシートのIDを入れる
 sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
-# スコア計算関数（スコアルール変更）
+# スコア計算関数
 def calculate_result(answers, label1, label2, label3):
     score_mapping = {
         "当てはまる": 2,
@@ -82,11 +82,11 @@ categories = {
                 "(11)推しは近い存在でいてほしいが、夢をかなえる姿が見たいので、ビッグになってほしいと思う",
                 "(12)推しに「がんばって」「好きだよ」と言われるだけでがんばれる",
                 "(13)どんなヲタクとも仲良くなれる",
-                "(14)推しがどんな秘密を抱えていても受け入れられると思う"
-                ,"(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き"
-                ,"(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう"
-                 ,"(17)5年以上推しているコンテンツがある"
-                ,"(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"],
+                "(14)推しがどんな秘密を抱えていても受け入れられると思う",
+                "(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き",
+               "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
+                 "(17)5年以上推しているコンテンツがある",
+                "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"],
      "カテゴリー3": ["(19)友達と推しが同じだったら嬉しい",
                 "(20)好きなものができたら周りに言いたいし、ハマってくれたら嬉しい",
                 "(21)興味を持った作品についてほかの読者の意見をみたくなる",
@@ -119,22 +119,32 @@ categories = {
 
 responses = []  # 初期化を追加
 
+
+responses = []  # 最初にリストを初期化しておく
+
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
         col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            if idx in [0, 9, 18, 27, 36]:  # Exclude "意味が分からない" for specific questions
-                response = st.radio("", ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
-                                    key=f"{category}_{idx}", horizontal=True)  
+            if idx in [0, 9, 18, 27, 36]:  # 特定の質問に対しては "どちらでもない" を除外
+                response = st.radio(
+                    "",
+                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
+                    key=f"{category}_{idx}", horizontal=True
+                )  
             else:
-                response = st.radio("", ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"], 
-                                    key=f"{category}_{idx}", horizontal=True)  # Exclude "意味が分からない"
+                response = st.radio(
+                    "",
+                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"], 
+                    key=f"{category}_{idx}", horizontal=True
+                )  # "どちらでもない" は除外
             responses.append(response)
 
         # 質問と質問の間に改行を入れる
-        st.markdown("<br>", unsafe_allow_html=True)  
+        st.markdown("<br>", unsafe_allow_html=True)
+ 
 
 if st.button("診断を実行"):
     st.session_state["final_result"] = (
