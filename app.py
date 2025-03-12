@@ -125,8 +125,12 @@ for category, questions in categories.items():
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            response = st.radio("", ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
-                                key=f"{category}_{idx}", horizontal=True)  
+            if idx in [0, 9, 18, 27, 36]:  # Exclude "意味が分からない" for specific questions
+                response = st.radio("", ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
+                                    key=f"{category}_{idx}", horizontal=True)  
+            else:
+                response = st.radio("", ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"], 
+                                    key=f"{category}_{idx}", horizontal=True)  # Exclude "意味が分からない"
             responses.append(response)
 
         # 質問と質問の間に改行を入れる
