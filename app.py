@@ -43,9 +43,10 @@ def calculate_result(answers, label1, label2, label3):
     score_mapping = {
         "当てはまる": 2,
         "やや当てはまる": 1,
+        "どちらでもない": 0,
         "あまり当てはまらない": -1,
         "当てはまらない": -2,
-        "どちらでもない": 0,
+       
     }
     
     total_score = sum(score_mapping[ans] for ans in answers)
@@ -134,7 +135,7 @@ for category, questions in categories.items():
             else:
                 response = st.radio(
                     "",
-                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"], 
+                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない","どちらでもない"], 
                     key=f"{category}_{idx}", horizontal=True
                 )  # "どちらでもない" は除外
             responses.append(response)
