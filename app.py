@@ -141,9 +141,13 @@ for category, questions in categories.items():
                     key=f"{category}_{idx}", horizontal=True
                 )  # "どちらでもない" は除外
             responses.append(response)
+            
+            # 選択された回答をデバッグ用に表示
+            st.write(f"選択された回答: {response}")
 
         # 質問と質問の間に改行を入れる
         st.markdown("<br>", unsafe_allow_html=True)
+
  
 
 if st.button("診断を実行"):
