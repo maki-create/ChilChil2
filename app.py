@@ -68,7 +68,7 @@ st.write("各質問に対して「当てはまる」「当てはまらない」�
 
 # 質問
 categories = {
-     "IかEか": [
+     "カテゴリー1": [
                 "(1)会場が遠くても積極的に遠征しに行くし、むしろモチベーションになっている", 
                 "(2)SNSでたくさんの人と交流するのが楽しい", 
                 "(3)イベントごと(コラボカフェ・ライブなど)が大好き。できればだれかと一緒に楽しみたい",
@@ -119,9 +119,6 @@ categories = {
 
 responses = []  # 初期化を追加
 
-
-responses = []  # 最初にリストを初期化しておく
-
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
         col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
@@ -131,7 +128,7 @@ for category, questions in categories.items():
             if idx in [0, 9, 18, 27, 36]:  # 特定の質問に対しては "どちらでもない" を除外
                 response = st.radio(
                     "",
-                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
+                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"], 
                     key=f"{category}_{idx}", horizontal=True
                 )  
             else:
