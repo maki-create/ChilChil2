@@ -94,6 +94,7 @@ categories = {
 
 responses = []  # 初期化を追加
 
+# 質問と回答を表示
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
         col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
@@ -116,14 +117,14 @@ for category, questions in categories.items():
             st.write(f"選択された回答: {response}")
         st.markdown("<br>", unsafe_allow_html=True)
 
-# 質問ページ（前のページ）
+# 「次のページへ」ボタンで自由記述ページに遷移
 if st.button("次のページへ"):
     # 回答をセッションに保存
     st.session_state["responses"] = responses
     # 自由記述ページに遷移
     st.switch_page("free_questions")  # 拡張子は不要、ページ名のみ
 
-# 自由記述ページ
+# 自由記述ページで診断を実行
 if "responses" in st.session_state:
     st.title("自由記述アンケート")
     st.write("以下の質問に自由に回答してください。")
@@ -139,7 +140,15 @@ if "responses" in st.session_state:
         response = st.text_area(f"{i+1}. {question}", key=f"free_response_{i}")
         free_responses.append(response)
     
-    
+    if st.button("診断を実行"):
+        # 診断結果の計算
+        final_result = (
+            f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[36:45], 'A', 'B', '意味が分からないばかり答えています')}"
+        )
         
         # 現在の日付と時間を取得
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
