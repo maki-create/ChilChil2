@@ -118,7 +118,7 @@ for category, questions in categories.items():
 
 if st.button("診断を実行"):
     st.session_state["responses"] = responses
-    st.switch_page("pages/free_response.py")
+    st.switch_page("free_questions.py")
 
 # 自由記述ページ
 if "responses" in st.session_state:
