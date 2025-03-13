@@ -136,16 +136,21 @@ if "responses" in st.session_state:
         response = st.text_area(f"{i+1}. {question}", key=f"free_response_{i}")
         free_responses.append(response)
     
-    if st.button("診断結果を見る"):
-        responses = st.session_state["responses"]
+    if st.button("診断を実行"):
+        # 診断結果の計算
         final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
             f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[36:45], 'A', 'B', '意味が分からないばかり答えています')}"
         )
         
+        # 現在の日付と時間を取得
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         try:
-            sheet.append_row([now, final_result[0], final_result[1], final_result] + responses + free_responses)
+            sheet.append_row([now, final_result] + responses + free_responses)
         except Exception as e:
             st.error(f"スプレッドシートへの記録に失敗しました: {e}")
             st.stop()
