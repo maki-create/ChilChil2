@@ -116,9 +116,12 @@ for category, questions in categories.items():
             st.write(f"選択された回答: {response}")
         st.markdown("<br>", unsafe_allow_html=True)
 
-if st.button("診断を実行"):
+# 質問ページ（前のページ）
+if st.button("次のページへ"):
+    # 回答をセッションに保存
     st.session_state["responses"] = responses
-    st.switch_page("free_questions.py")
+    # 自由記述ページに遷移
+    st.switch_page("free_questions")  # 拡張子は不要、ページ名のみ
 
 # 自由記述ページ
 if "responses" in st.session_state:
