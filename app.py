@@ -81,73 +81,101 @@ categories = {
         "(17)5年以上推しているコンテンツがある",
         "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
     ],
+    "カテゴリー3": [
+        "(10)推しの絶対的な味方でいたい",
+        "(11)推しは近い存在でいてほしいが、夢をかなえる姿が見たいので、ビッグになってほしいと思う",
+        "(12)推しに「がんばって」「好きだよ」と言われるだけでがんばれる",
+        "(13)どんなヲタクとも仲良くなれる",
+        "(14)推しがどんな秘密を抱えていても受け入れられると思う",
+        "(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き",
+        "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
+        "(17)5年以上推しているコンテンツがある",
+        "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
+    ],
+    "カテゴリ4": [
+        "(10)推しの絶対的な味方でいたい",
+        "(11)推しは近い存在でいてほしいが、夢をかなえる姿が見たいので、ビッグになってほしいと思う",
+        "(12)推しに「がんばって」「好きだよ」と言われるだけでがんばれる",
+        "(13)どんなヲタクとも仲良くなれる",
+        "(14)推しがどんな秘密を抱えていても受け入れられると思う",
+        "(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き",
+        "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
+        "(17)5年以上推しているコンテンツがある",
+        "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
+    ]
+    
 }
 
-responses = []  # 初期化を追加
+responses = []  # 回答のリスト
 
-# 質問と回答を表示
+# 選択式質問の表示
 for category, questions in categories.items():
     for idx, q in enumerate(questions):
         col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
         with col1:
             st.write(f"**{q}**")  # 質問を左に配置
         with col2:
-            if idx in [0, 9, 18, 27, 36]:  # 特定の質問に対しては "どちらでもない" を除外
-                response = st.radio(
-                    "",
-                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"], 
-                    key=f"{category}_{idx}", horizontal=True
-                )  
-            else:
-                response = st.radio(
-                    "",
-                    ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"], 
-                    key=f"{category}_{idx}", horizontal=True
-                )  
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
+            if idx not in [0, 9, 18, 27, 36]:  # 特定の質問以外は "どちらでもない" を追加
+                options.append("どちらでもない")
+
+            response = st.radio(
+                "",
+                options, 
+                key=f"{category}_{idx}", horizontal=True
+            )
             responses.append(response)
-            st.write(f"選択された回答: {response}")
+            st.write(f"選択した回答: {response}")
         st.markdown("<br>", unsafe_allow_html=True)
 
-# 「次のページへ」ボタンで自由記述ページに遷移
-if st.button("次のページへ"):
-    # 回答をセッションに保存
-    st.session_state["responses"] = responses
-    # 自由記述ページに遷移
-    st.switch_page("free_questions")  # 拡張子は不要、ページ名のみ
+# **自由記述質問**
+st.title("自由記述アンケート")
+st.write("以下の質問に自由に回答してください。")
 
-# 自由記述ページで診断を実行
-if "responses" in st.session_state:
-    st.title("自由記述アンケート")
-    st.write("以下の質問に自由に回答してください。")
-    
-    free_responses = []
-    questions = [
-        "あなたが一番好きな推し活のエピソードを教えてください。",
-        "推し活をしていて嬉しかったことは何ですか？",
-        "推し活をしていて大変だったことは何ですか？"
-    ]
-    
-    for i, question in enumerate(questions):
-        response = st.text_area(f"{i+1}. {question}", key=f"free_response_{i}")
-        free_responses.append(response)
-    
-    if st.button("診断を実行"):
-        # 診断結果の計算
-        final_result = (
-            f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[36:45], 'A', 'B', '意味が分からないばかり答えています')}"
-        )
-        
-        # 現在の日付と時間を取得
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        try:
-            sheet.append_row([now, final_result] + responses + free_responses)
-        except Exception as e:
-            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-            st.stop()
-        
-        st.success(f"診断結果: {final_result}")
+free_responses = []
+free_questions = [
+    "あなたが一番好きな推し活のエピソードを教えてください。",
+    "推し活をしていて嬉しかったことは何ですか？",
+    "推し活をしていて大変だったことは何ですか？"
+]
+
+for i, question in enumerate(free_questions):
+    response = st.text_area(f"{i+1}. {question}", key=f"free_response_{i}")
+    free_responses.append(response)
+
+# 診断を実行
+if st.button("診断を実行"):
+    if len(responses) < 36:  # 質問が45個あるので、不足していればエラー
+        st.error("全ての質問に回答してください")
+        st.stop()
+
+    # 診断結果の計算
+    final_result = (
+        f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
+
+    )
+
+    # 現在の日付と時間を取得
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Googleスプレッドシートに記録（必要に応じて）
+    try:
+        sheet.append_row([now, final_result] + responses + free_responses)
+    except Exception as e:
+        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+        st.stop()
+
+    # 診断結果をセッションに保存
+    st.session_state["final_result"] = final_result
+
+    # 診断結果のページに遷移
+    result_page = f"D:/python/pages/{final_result}.py"
+
+    # ページが存在するか確認してから遷移
+    try:
+        st.switch_page(result_page)
+    except Exception:
+        st.error(f"ページ {final_result}.py が見つかりません。作成してください。")
