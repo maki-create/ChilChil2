@@ -172,7 +172,7 @@ if st.button("診断を実行"):
     st.session_state["final_result"] = final_result
 
     # 診断結果のページに遷移
-    result_page = f"D:/python/pages/{final_result}.py"
+    result_page = "{final_result}"
 
     # ページが存在するか確認してから遷移
     try:
