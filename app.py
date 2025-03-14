@@ -13,9 +13,6 @@ st.markdown("""
 # Streamlit Secretsから情報を取得
 google_credentials = st.secrets["google_credentials"]
 
-# secrets.toml から Google 認証情報を取得
-google_credentials = st.secrets["google_credentials"]
-
 # Google API 認証
 scope = [
     "https://spreadsheets.google.com/feeds",
@@ -91,19 +88,7 @@ categories = {
         "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
         "(17)5年以上推しているコンテンツがある",
         "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
-    ],
-    "カテゴリ4": [
-        "(10)推しの絶対的な味方でいたい",
-        "(11)推しは近い存在でいてほしいが、夢をかなえる姿が見たいので、ビッグになってほしいと思う",
-        "(12)推しに「がんばって」「好きだよ」と言われるだけでがんばれる",
-        "(13)どんなヲタクとも仲良くなれる",
-        "(14)推しがどんな秘密を抱えていても受け入れられると思う",
-        "(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き",
-        "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
-        "(17)5年以上推しているコンテンツがある",
-        "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
     ]
-    
 }
 
 responses = []  # 回答のリスト
@@ -125,8 +110,6 @@ for category, questions in categories.items():
                 key=f"{category}_{idx}", horizontal=True
             )
             responses.append(response)
-            st.write(f"選択した回答: {response}")
-        st.markdown("<br>", unsafe_allow_html=True)
 
 # **自由記述質問**
 st.title("自由記述アンケート")
@@ -145,7 +128,7 @@ for i, question in enumerate(free_questions):
 
 # 診断を実行
 if st.button("診断を実行"):
-    if len(responses) < 36:  # 質問が45個あるので、不足していればエラー
+    if len(responses) < 36:  # 質問が36個あるので、不足していればエラー
         st.error("全ての質問に回答してください")
         st.stop()
 
@@ -155,7 +138,6 @@ if st.button("診断を実行"):
         f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
         f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
         f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
-
     )
 
     # 現在の日付と時間を取得
@@ -171,12 +153,11 @@ if st.button("診断を実行"):
     # 診断結果をセッションに保存
     st.session_state["final_result"] = final_result
 
-result_page = f"pages/{final_result}"
-st.switch_page(result_page)
-
-
+    # 遷移先のページ
+    result_page = f"pages/{final_result}.py"
+    
     # ページが存在するか確認してから遷移
-try:
+    try:
         st.switch_page(result_page)
-except Exception:
+    except Exception:
         st.error(f"ページ {final_result}.py が見つかりません。作成してください。")
