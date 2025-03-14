@@ -143,7 +143,7 @@ if st.button("診断を実行"):
         st.error("全ての質問に回答してください")
         st.stop()
 
-   # 診断結果の計算
+# 診断結果の計算
 final_result = (
     f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
     f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
@@ -151,11 +151,10 @@ final_result = (
     f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
 )
 
-
-    # 現在の日付と時間を取得
+# 現在の日付と時間を取得
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Googleスプレッドシートに記録（必要に応じて）
+# Googleスプレッドシートに記録（必要に応じて）
     try:
         sheet.append_row([now, final_result] + responses + free_responses)
     except Exception as e:
