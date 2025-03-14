@@ -171,8 +171,9 @@ if st.button("診断を実行"):
     # 診断結果をセッションに保存
     st.session_state["final_result"] = final_result
 
-    # 診断結果のページに遷移
-    result_page = "{final_result}"
+result_page = f"pages/{final_result}"
+st.switch_page(result_page)
+
 
     # ページが存在するか確認してから遷移
     try:
