@@ -165,4 +165,4 @@ except Exception as e:
 st.session_state["final_result"] = final_result
 
 # 診断結果ページに遷移
-st.switch_page("result")
+st.switch_page("pages/result")
