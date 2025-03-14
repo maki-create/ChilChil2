@@ -1,18 +1,61 @@
 import streamlit as st
 
-st.title("診断結果")
+# サイドバーの非表示
+st.markdown("""
+    <style>
+        section[data-testid="stSidebar"] {display: none;}
+    </style>
+    """, unsafe_allow_html=True)
 
-# 診断結果を取得
-if "result_自己分析" in st.session_state:
-    final_result = f"""
-    **あなたの診断結果**
-    - {st.session_state['result_自己分析']['result_他者との関係']}
-    -['result_職業適性']['result_ライフスタイル']
-    """
-    st.success(final_result)
-else:
-    st.warning("まだ診断が行われていません。")
+# 診断結果をセッションから取得
+if "final_result" not in st.session_state:
+    st.error("診断結果が保存されていません。")
+    st.stop()
 
-# 戻るボタン
-if st.button("ホームに戻る"):
-    st.switch_page("app.py")
+final_result = st.session_state["final_result"]
+
+# 診断結果に基づいて表示内容を切り替える
+def show_result(result):
+    if result == "活動家A":
+        st.title("診断結果: 活動家A")
+        st.write("""
+            活動家タイプのあなた。とにかく楽しいことやお祭り騒ぎが好きで、イベントやコラボカフェなどお出かけに積極的な活動家さん。
+            交友関係が広く、オタ活を通してできた友達と親友になることもあります。プライベートも充実していて毎日輝いているでしょう。
+            推しのすべてが好きなので、周りが推しの魅力に気づいてくれることに喜びを感じます。ただ、あまりの熱量に相手が圧倒されてしまうことも。
+            布教に失敗してもへこまないでね。
+        """)
+
+    elif result == "活動家B":
+        st.title("診断結果: 活動家B")
+        st.write("""
+            活動家Bのあなたは、好奇心旺盛でどんなイベントにも興味津々。新しい経験を重視し、常に自分をアップデートしています。
+            SNSやオンラインでも精力的に活動しており、推し活を通じて得られる刺激に満ちた日々を楽しんでいます。
+            時にはちょっとした失敗があっても、その経験を次に活かす柔軟性を持っています。
+        """)
+
+    elif result == "活動家C":
+        st.title("診断結果: 活動家C")
+        st.write("""
+            活動家Cタイプのあなたは、社交的で周囲に元気を与える存在です。仲間との絆を大切にしており、みんなで一緒に楽しむことが大好き。
+            推し活を通して人脈を広げ、集まった仲間たちと一緒に楽しい思い出を作ることに喜びを感じています。
+        """)
+
+    # ここに他の診断結果を追加していく (例: 活動家D, 活動家E, ...)
+
+    elif result == "活動家P":
+        st.title("診断結果: 活動家P")
+        st.write("""
+            活動家Pタイプのあなたは、自由奔放で楽しいことを最優先に考えます。新しいアイデアを追求し、常にワクワクするものに触れていたいタイプ。
+            イベントや推し活を通して、自己表現を大切にし、仲間との関係も大事にしています。
+        """)
+
+    else:
+        st.write("診断結果が見つかりませんでした。")
+
+# 診断結果を表示
+show_result(final_result)
+
+# 「元のアプリに戻る」ボタン
+if st.button("元のページに戻る"):
+    st.session_state.clear()  # セッション状態をリセット
+    st.experimental_rerun()  # アプリをリロード
