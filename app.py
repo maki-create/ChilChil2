@@ -152,7 +152,7 @@ final_result = (
 )
 
 # 現在の日付と時間を取得
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Googleスプレッドシートに記録（必要に応じて）
     try:
