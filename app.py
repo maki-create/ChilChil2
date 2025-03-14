@@ -178,5 +178,5 @@ st.switch_page(result_page)
     # ページが存在するか確認してから遷移
 try:
         st.switch_page(result_page)
-    except Exception:
+except Exception:
         st.error(f"ページ {final_result}.py が見つかりません。作成してください。")
