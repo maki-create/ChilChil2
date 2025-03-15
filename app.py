@@ -23,7 +23,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(google_credentials
 client = gspread.authorize(creds)
 
 # Googleスプレッドシートを開く
-spreadsheet_id = "1eKhD929QC8fdvse2G92woknfWh7Dnv7Pmi2w1ZqXWCM"  # ★スプレッドシートのIDを入れる
+spreadsheet_id = st.secrets["google_credentials"]["spreadsheet_id"]
 sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
 # スコア計算関数
