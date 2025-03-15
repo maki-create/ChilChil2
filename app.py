@@ -143,26 +143,26 @@ if st.button("診断を実行"):
         st.error("全ての質問に回答してください")
         st.stop()
 
-# 診断結果の計算
-final_result = (
-    f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
-    f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
-    f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
-    f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
-)
+    # 診断結果の計算
+    final_result = (
+        f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
+    )
 
-# 現在の日付と時間を取得
-now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 現在の日付と時間を取得
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# Googleスプレッドシートに記録（必要に応じて）
-# try:
+    # Googleスプレッドシートに記録
+    try:
         sheet.append_row([now, final_result] + responses + free_responses)
-# except Exception as e:
+    except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
         st.stop()
 
-# セッションに結果を保存
-st.session_state["final_result"] = final_result
+    # セッションに結果を保存
+    st.session_state["final_result"] = final_result
 
-# 診断結果ページに遷移
-st.switch_page("result")
+    # **診断ボタンを押した場合のみ結果ページに遷移**
+    st.switch_page("result")
