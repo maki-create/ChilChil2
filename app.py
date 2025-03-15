@@ -155,9 +155,9 @@ final_result = (
 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Googleスプレッドシートに記録（必要に応じて）
-try:
+# try:
         sheet.append_row([now, final_result] + responses + free_responses)
-except Exception as e:
+# except Exception as e:
         st.error(f"スプレッドシートへの記録に失敗しました: {e}")
         st.stop()
 
