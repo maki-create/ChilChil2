@@ -4,7 +4,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import pytz
 
-
 st.markdown("""
     <style>
         section[data-testid="stSidebar"] {display: none;}
@@ -51,6 +50,7 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
+# 診断結果ページ
 def result_page():
     final_result = st.session_state["final_result"]
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
@@ -77,7 +77,7 @@ def result_page():
     st.markdown(
         """
         <div style="text-align: center; margin-top: 20px;">
-            <a href="https://chilchil2-qxehnzkrhvqchpqqgjsgum.streamlit.app/?page=result#63d94710">
+            <a href="/">
                 <button style="background-color:#f44336; color:white; padding:10px 20px; border:none; cursor:pointer;">
                     戻る
                 </button>
@@ -85,7 +85,16 @@ def result_page():
         </div>
         """, unsafe_allow_html=True)
 
-
+# 診断ページの仮実装
+def diagnosis_page():
+    st.title("診断ページ")
+    # ユーザーからの回答を取得
+    responses = ["当てはまる", "やや当てはまる", "どちらでもない"]  # 仮の回答
+    # 診断結果を計算
+    final_result = calculate_result(responses, "ENFP", "ISFJ", "INTJ")
+    st.session_state["final_result"] = final_result
+    st.session_state["result_page"] = True
+    st.write("診断結果が計算されました！")
 
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
@@ -96,7 +105,7 @@ def calculate_result(answers, label1, label2, label3):
         "あまり当てはまらない": -1,
         "当てはまらない": -2,
     }
-    
+
     total_score = sum(score_mapping[ans] for ans in answers)
 
     if total_score == 0 and answers:
@@ -109,23 +118,23 @@ def calculate_result(answers, label1, label2, label3):
     else:
         return label3
 
-
 # 日本時間のタイムゾーンを指定
 japan_timezone = pytz.timezone('Asia/Tokyo')
 
 # 現在の日本時間を取得
 now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
-
+# スプレッドシートへの記録
+responses = ["当てはまる", "やや当てはまる", "どちらでもない"]  # 仮のデータ
 try:
-            sheet.append_row([now, final_result] + responses)
+    sheet.append_row([now, st.session_state["final_result"]] + responses)
 except Exception as e:
-            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-            st.stop()
+    st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+    st.stop()
 
-st.session_state["final_result"] = final_result 
+st.session_state["final_result"] = final_result
 st.session_state["result_page"] = True
-st.rerun()  
+st.rerun()
 
 # メイン処理
 def main():
