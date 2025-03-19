@@ -25,7 +25,7 @@ client = gspread.authorize(creds)
 spreadsheet_id = st.secrets["google_credentials"]["spreadsheet_id"]
 sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
-# セッションステートの初期化（エラー回避）
+# セッションステートの初期化
 st.session_state.setdefault("final_result", None)
 st.session_state.setdefault("result_page", False)
 
@@ -51,9 +51,9 @@ result_labels = {
 # 診断結果の対応表
 result_mapping = {
     "ENFP": "カリスマ",
-    "ES": "冒険家",
-    "IN": "思索家",
-    "IS": "職人",
+    "ESFJ": "冒険家",
+    "INFP": "思索家",
+    "ISTP": "職人",
     "ENTP": "発明家",
     "ENTJ": "指揮官",
     "INTP": "哲学者",
@@ -73,7 +73,7 @@ result_descriptions = {
     "冒険家": "あなたは好奇心旺盛で、新しいことに挑戦するのが大好きです。",
     "思索家": "深く物事を考え、理論的に問題を解決するのが得意です。",
     "職人": "実践的なスキルに優れ、細かい作業が得意です。",
-    # 他のタイプも追加可能
+    # 他のタイプは文言決定次第流し込み
 }
 
 # スコア計算関数
@@ -152,15 +152,15 @@ def diagnosis_page():
 
     # 診断ボタン
     if st.button("診断を実行"):
-        if len(responses) < 4:  # 例では質問が4つなので調整
+        if len(responses) < 4:  
             st.error("全ての質問に回答してください")
             st.stop()
 
         final_result = (
-            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からない')}"
-            f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からない')}"
-            f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からない')}"
-            f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からない')}"
+            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からないばかり答えています')}"
         )
 
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
