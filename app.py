@@ -47,10 +47,33 @@ def calculate_result(answers, label1, label2, label3):
     else:
         return label3
 
+# 診断結果を人間向けのラベルに変換する辞書
+result_labels = {
+    "EN": "カリスマ",
+    "ES": "エネルギッシュ",
+    "IN": "思慮深い",
+    "IS": "職人肌",
+    "ENTP": "アイデアマン",
+    "INTJ": "戦略家",
+    "ESFP": "エンターテイナー",
+    "ISTJ": "管理者",
+    "INFJ": "理想主義者",
+    "ISTP": "実践派",
+    "ENTJ": "指導者",
+    "ISFJ": "献身的",
+    "ENFJ": "インスピレーションメーカー",
+    "ESTJ": "リーダー気質",
+    "ESTP": "冒険家",
+    "INTP": "論理的思考家"
+}
+
 # 結果ページの表示関数
 def result_page():
+    final_result = st.session_state["final_result"]
+    translated_result = result_labels.get(final_result, "診断結果不明")
+
     st.title("診断結果")
-    st.write(f"あなたの診断結果は: **{st.session_state['final_result']}**")
+    st.write(f"あなたの診断結果は: **{translated_result}** ({final_result})")
 
 # Streamlit UI
 def diagnosis_page():
@@ -93,7 +116,7 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-        st.experimental_rerun()  # 診断後にページをリロードし、結果ページに遷移
+        st.experimental_rerun()
 
 # メイン処理
 def main():
