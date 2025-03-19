@@ -167,7 +167,7 @@ def diagnosis_page():
         st.session_state["result_page"] = True  # 結果ページに遷移
 
         # ここでページ遷移を管理する
-        st.experimental_set_query_params(page="result")
+       st.query_params(page="result")
 
 
 # メイン処理
