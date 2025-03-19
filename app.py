@@ -168,12 +168,23 @@ def diagnosis_page():
 
 # メイン処理
 def main():
-    page = st.query_params.get("page", ["diagnosis"])[0]  # 修正された行
+    # Get the query parameters safely
+    page = st.query_params.get("page", ["diagnosis"])[0]
 
     if page == "result":
         result_page()
     else:
         diagnosis_page()
+
+# 診断ページ
+def diagnosis_page():
+    st.title("性格診断アプリ")
+    # Additional logic for diagnosis page
+
+# 結果ページ
+def result_page():
+    st.title("診断結果")
+    # Additional logic for result page
 
 if __name__ == "__main__":
     main()
