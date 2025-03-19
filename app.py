@@ -28,6 +28,7 @@ sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選�
 # セッションステートの初期化
 st.session_state.setdefault("final_result", None)
 st.session_state.setdefault("result_page", False)
+st.session_state.setdefault("page", "diagnosis")
 
 result_labels = {
     "ENFP": ("カリスマ", "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。自信を持ち、積極的に行動することでさらに成長できます。"),
@@ -117,9 +118,9 @@ def result_page():
     # 戻るボタン
     if st.button("元のページに戻る"):
         st.session_state["result_page"] = False  # 診断ページに戻る
+        st.session_state["page"] = "diagnosis"  # 診断ページに遷移
         st.experimental_rerun()  # ページを再読み込み
 
-# 診断ページ
 # 診断ページ
 def diagnosis_page():
     st.title("性格診断アプリ")
@@ -136,49 +137,4 @@ def diagnosis_page():
     for category, questions in categories.items():
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
-            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
-            if idx not in [0, 9, 18, 27, 36]:  
-                options.append("どちらでもない")
-            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
-            responses.append(response)
-
-    # 診断ボタン
-    if st.button("診断を実行"):
-        if len(responses) < 4:  
-            st.error("全ての質問に回答してください")
-            return
-
-        final_result = (
-            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からないばかり答えています')}"
-        )
-
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        try:
-            sheet.append_row([now, final_result] + responses)
-        except Exception as e:
-            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-            return
-
-        st.session_state["final_result"] = final_result
-        st.session_state["result_page"] = True  # 結果ページに遷移
-
-        # ここでページ遷移を管理する
-        st.experimental_set_query_params(page="result")  # 修正：st.experimental_set_query_paramsを使用
-
-
-
-# メイン処理
-def main():
-    page = st.query_params.get("page", ["diagnosis"])[0]
-
-    if page == "result":
-        result_page()
-    else:
-        diagnosis_page()
-
-if __name__ == "__main__":
-    main()
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまら
