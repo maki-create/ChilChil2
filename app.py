@@ -131,17 +131,10 @@ try:
     sheet.append_row([now, st.session_state["final_result"]] + responses)
 except Exception as e:
     st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-    st.stop()
-
-st.session_state["result_page"] = True  # 診断結果ページへ遷移
-st.rerun()
 
 # メイン処理
 def main():
     if st.session_state.get("result_page", False):
         result_page()
     else:
-        diagnosis_page()
-
-if __name__ == "__main__":
-    main()
+        diagnosis
