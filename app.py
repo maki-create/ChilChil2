@@ -48,6 +48,25 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
+# 診断結果の対応表
+result_mapping = {
+    "ENFP": "カリスマ",
+    "ESFJ": "冒険家",
+    "INFP": "思索家",
+    "ISTP": "職人",
+    "ENTP": "発明家",
+    "ENTJ": "指揮官",
+    "INTP": "哲学者",
+    "INTJ": "戦略家",
+    "INFJ": "助言者",
+    "ESFP": "エンターテイナー",
+    "ISFP": "芸術家",
+    "ESTP": "挑戦者",
+    "ISTP": "職人気質",
+    "ESTJ": "管理者",
+    "ISTJ": "実務家"
+}
+
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
     score_mapping = {
@@ -97,8 +116,8 @@ def result_page():
     
     # 戻るボタン
     if st.button("元のページに戻る"):
-        st.session_state["app"] = False  # 診断ページに戻る
-       
+        st.session_state["result_page"] = False  # 診断ページに戻る
+        st.experimental_set_query_params(page="diagnosis")
 
 # 診断ページ
 def diagnosis_page():
@@ -124,9 +143,9 @@ def diagnosis_page():
 
     # 診断ボタン
     if st.button("診断を実行"):
-        if len(responses) < len(categories) * 2:  # 質問数と同じ数だけ回答されているか確認
+        if len(responses) < 4:  
             st.error("全ての質問に回答してください")
-            st.stop()
+            return
 
         final_result = (
             f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
@@ -141,15 +160,17 @@ def diagnosis_page():
             sheet.append_row([now, final_result] + responses)
         except Exception as e:
             st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-            st.stop()
+            return
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True  # 結果ページに遷移
-        st.experimental_rerun()  # 診断結果ページへ遷移
+        st.experimental_set_query_params(page="result")
 
 # メイン処理
 def main():
-    if st.session_state.get("result_page", False):
+    page = st.experimental_get_query_params().get("page", ["diagnosis"])[0]
+
+    if page == "result":
         result_page()
     else:
         diagnosis_page()
