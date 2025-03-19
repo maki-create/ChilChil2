@@ -30,7 +30,7 @@ st.session_state.setdefault("final_result", None)
 st.session_state.setdefault("result_page", False)
 
 result_labels = {
-    "EN": ("カリスマ", "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。自信を持ち、積極的に行動することでさらに成長できます。"),
+    "ENFP": ("カリスマ", "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。自信を持ち、積極的に行動することでさらに成長できます。"),
     "ES": ("エネルギッシュ", "あなたは活発でエネルギッシュな性格です。常に新しいことに挑戦し、周囲を巻き込んで楽しむタイプです。"),
     "IN": ("思慮深い", "あなたは物事を深く考える傾向があります。慎重な判断ができ、洞察力に優れています。"),
     "IS": ("職人肌", "あなたはコツコツと努力を積み重ねる職人タイプです。自分のペースで着実に成果を出します。"),
@@ -153,8 +153,10 @@ def diagnosis_page():
             st.stop()
 
         final_result = (
-            f"{calculate_result(responses[0:2], 'E', 'I', '意味が分からない')}"
-            f"{calculate_result(responses[2:4], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からない')}"
+            f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[4:5], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[6:7], 'N', 'S', '意味が分からない')}"
         )
 
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
