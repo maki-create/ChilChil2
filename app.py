@@ -111,7 +111,7 @@ def result_page():
     # 診断結果の表示
     st.markdown(f"""
         <h2 style='text-align: center; font-size: 36px; color: #ff5733;'>
-            あなたの診断結果は: {result_name} 
+             {result_name} 
         </h2>
         """, unsafe_allow_html=True)
 
