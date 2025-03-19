@@ -69,7 +69,7 @@ result_mapping = {
 
 # 診断結果に対応する説明文
 result_descriptions = {
-    "カリスマ": "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform",
+    "カリスマ": "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。",
     "冒険家": "あなたは好奇心旺盛で、新しいことに挑戦するのが大好きです。",
     "思索家": "深く物事を考え、理論的に問題を解決するのが得意です。",
     "職人": "実践的なスキルに優れ、細かい作業が得意です。",
@@ -121,8 +121,8 @@ def result_page():
     
     # 戻るボタンの追加
     if st.button("元のページに戻る"):
-        st.session_state["result_page"] = False
-        st.experimental_rerun()  # ページをリセットして診断ページに戻る
+        st.session_state["result_page"] = False  # 診断ページに戻る
+        st.experimental_rerun()  # この行を削除
 
 # 診断ページ
 def diagnosis_page():
@@ -166,8 +166,8 @@ def diagnosis_page():
             st.stop()
 
         st.session_state["final_result"] = final_result
-        st.session_state["result_page"] = True
-        st.experimental_rerun()  # 🔄 修正ポイント
+        st.session_state["result_page"] = True  # 結果ページに遷移
+        st.experimental_rerun()  # ページをリセットして診断ページに戻る
 
 # メイン処理
 def main():
