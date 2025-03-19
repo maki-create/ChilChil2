@@ -61,7 +61,8 @@ def result_page():
     st.write(f"ここに文言を入れる")
 
   # アンケートページに遷移するボタンを追加
-   st.markdown("""
+st.markdown(
+        """
         <div style="text-align: center;">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform" target="_blank">
                 <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
