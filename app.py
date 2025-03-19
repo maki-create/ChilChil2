@@ -122,7 +122,7 @@ def result_page():
     # 戻るボタンの追加
     if st.button("元のページに戻る"):
         st.session_state["result_page"] = False  # 診断ページに戻る
-        st.experimental_rerun()  # この行を削除
+        # st.experimental_rerun()は削除
 
 # 診断ページ
 def diagnosis_page():
@@ -167,7 +167,6 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True  # 結果ページに遷移
-        st.experimental_rerun()  # ページをリセットして診断ページに戻る
 
 # メイン処理
 def main():
