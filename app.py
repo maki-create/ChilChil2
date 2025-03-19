@@ -25,6 +25,30 @@ client = gspread.authorize(creds)
 spreadsheet_id = st.secrets["google_credentials"]["spreadsheet_id"]
 sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
+# セッションステートの初期化（エラー回避）
+st.session_state.setdefault("final_result", None)
+st.session_state.setdefault("result_page", False)
+
+# 診断結果を人間向けのラベルに変換する辞書
+result_labels = {
+    "EN": "カリスマ",
+    "ES": "エネルギッシュ",
+    "IN": "思慮深い",
+    "IS": "職人肌",
+    "ENTP": "アイデアマン",
+    "INTJ": "戦略家",
+    "ESFP": "エンターテイナー",
+    "ISTJ": "管理者",
+    "INFJ": "理想主義者",
+    "ISTP": "実践派",
+    "ENTJ": "指導者",
+    "ISFJ": "献身的",
+    "ENFJ": "インスピレーションメーカー",
+    "ESTJ": "リーダー気質",
+    "ESTP": "冒険家",
+    "INTP": "論理的思考家"
+}
+
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
     score_mapping = {
@@ -47,27 +71,7 @@ def calculate_result(answers, label1, label2, label3):
     else:
         return label3
 
-# 診断結果を人間向けのラベルに変換する辞書
-result_labels = {
-    "EN": "カリスマ",
-    "ES": "エネルギッシュ",
-    "IN": "思慮深い",
-    "IS": "職人肌",
-    "ENTP": "アイデアマン",
-    "INTJ": "戦略家",
-    "ESFP": "エンターテイナー",
-    "ISTJ": "管理者",
-    "INFJ": "理想主義者",
-    "ISTP": "実践派",
-    "ENTJ": "指導者",
-    "ISFJ": "献身的",
-    "ENFJ": "インスピレーションメーカー",
-    "ESTJ": "リーダー気質",
-    "ESTP": "冒険家",
-    "INTP": "論理的思考家"
-}
-
-# 結果ページの表示関数
+# 結果ページの表示
 def result_page():
     final_result = st.session_state["final_result"]
     translated_result = result_labels.get(final_result, "診断結果不明")
@@ -75,7 +79,7 @@ def result_page():
     st.title("診断結果")
     st.write(f"あなたの診断結果は: **{translated_result}** ({final_result})")
 
-# Streamlit UI
+# 診断ページ
 def diagnosis_page():
     st.title("性格診断アプリ")
     st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
@@ -116,7 +120,7 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-        st.experimental_rerun()
+        st.rerun()  # 🔄 修正ポイント
 
 # メイン処理
 def main():
