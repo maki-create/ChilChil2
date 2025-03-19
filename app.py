@@ -168,7 +168,7 @@ def diagnosis_page():
 
 # メイン処理
 def main():
-    page = st.query_params().get("page", ["diagnosis"])[0]
+    page = st.query_params.get("page", ["diagnosis"])[0]  # 修正された行
 
     if page == "result":
         result_page()
