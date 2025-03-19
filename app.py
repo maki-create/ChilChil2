@@ -137,4 +137,7 @@ def main():
     if st.session_state.get("result_page", False):
         result_page()
     else:
-        diagnosis
+        diagnosis_page()
+
+if __name__ == "__main__":
+    main()
