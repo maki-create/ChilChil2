@@ -120,6 +120,7 @@ def result_page():
         st.experimental_rerun()  # ページを再読み込み
 
 # 診断ページ
+# 診断ページ
 def diagnosis_page():
     st.title("性格診断アプリ")
     st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
@@ -164,7 +165,10 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True  # 結果ページに遷移
-        st.experimental_rerun()  # ページを再読み込み
+
+        # ここでページ遷移を管理する
+        st.experimental_set_query_params(page="result")
+
 
 # メイン処理
 def main():
