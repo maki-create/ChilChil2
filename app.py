@@ -151,9 +151,9 @@ now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
 now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
-    try:
+try:
             sheet.append_row([now, final_result] + responses)
-    except Exception as e:
+except Exception as e:
             st.error(f"スプレッドシートへの記録に失敗しました: {e}")
             st.stop()
 
