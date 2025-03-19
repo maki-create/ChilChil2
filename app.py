@@ -118,6 +118,11 @@ def result_page():
     # 診断結果の説明を表示
     st.write(f"**{result_description}**")
 
+　　# 戻るボタンの追加
+    if st.button("元のページに戻る"):
+        st.session_state["result_page"] = False
+        st.experimental_rerun()  # ページをリセットして診断ページに戻る
+
 # 診断ページ
 def diagnosis_page():
     st.title("性格診断アプリ")
