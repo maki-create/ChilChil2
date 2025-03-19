@@ -140,7 +140,7 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-        st.rerun()  
+    
 
 # メイン処理
 def main():
