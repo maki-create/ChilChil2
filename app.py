@@ -118,6 +118,10 @@ def result_page():
 
     # 診断結果の説明を表示
     st.write(f"**{result_description}**")
+
+    # 診断結果の説明を表示
+    st.write(f"アンケートにご協力ください")
+    st.write(f"https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform")
     
     # 戻るボタンの追加
     if st.button("元のページに戻る"):
