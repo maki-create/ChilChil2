@@ -155,8 +155,8 @@ def diagnosis_page():
         final_result = (
             f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からない')}"
             f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からない')}"
-            f"{calculate_result(responses[4:5], 'N', 'S', '意味が分からない')}"
-            f"{calculate_result(responses[6:7], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からない')}"
+            f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からない')}"
         )
 
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
