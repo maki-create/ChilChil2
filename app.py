@@ -143,7 +143,13 @@ def diagnosis_page():
             f"{calculate_result(responses[3:4], 'P', 'J', '意味が分からない')}"
         )
 
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # 日本時間のタイムゾーンを指定
+japan_timezone = pytz.timezone('Asia/Tokyo')
+
+# 現在の日本時間を取得
+now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
+
+now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
         try:
             sheet.append_row([now, final_result] + responses)
