@@ -98,7 +98,7 @@ def result_page():
     st.title("診断結果")
 
     result_name = result_mapping.get(final_result, "不明")  # 対応がない場合は「不明」に
-    result_description = result_descriptions.get(result_name, "診断結果の説明が見つかりません。")
+    result_description = result_labels.get(result_name, "診断結果の説明が見つかりません。")
 
     # 診断結果の表示
     st.markdown(f"""
@@ -117,7 +117,7 @@ def result_page():
     # 戻るボタン
     if st.button("元のページに戻る"):
         st.session_state["result_page"] = False  # 診断ページに戻る
-        st.query_params(page="diagnosis")
+        st.experimental_set_query_params(page="diagnosis")  # 診断ページに戻る
 
 # 診断ページ
 def diagnosis_page():
@@ -164,12 +164,11 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True  # 結果ページに遷移
-        st.query_params(page="result")
+        st.experimental_set_query_params(page="result")  # 結果ページに遷移
 
 # メイン処理
 def main():
-    # Get the query parameters safely
-    page = st.query_params.get("page", ["diagnosis"])[0]
+    page = st.experimental_get_query_params().get("page", ["diagnosis"])[0]
 
     if page == "result":
         result_page()
