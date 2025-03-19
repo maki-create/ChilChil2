@@ -107,7 +107,6 @@ def result_page():
     translated_result = result_labels.get(final_result, "診断結果不明")
 
     st.title("診断結果")
-    st.write(f"あなたの診断結果は: **{translated_result}** ({final_result})")
 
     result_name = result_mapping.get(final_result, "不明")  # 対応がない場合は「不明」に
     result_description = result_descriptions.get(result_name, "診断結果の説明が見つかりません。")
@@ -115,7 +114,7 @@ def result_page():
     # 診断結果の表示
     st.markdown(f"""
         <h2 style='text-align: center; font-size: 36px; color: #ff5733;'>
-            あなたの診断結果は: {result_name} ({final_result})
+            あなたの診断結果は: {result_name} 
         </h2>
         """, unsafe_allow_html=True)
 
