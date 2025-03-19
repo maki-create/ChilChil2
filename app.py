@@ -49,7 +49,6 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
-# 診断結果ページ
 def result_page():
     final_result = st.session_state["final_result"]
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
@@ -60,10 +59,10 @@ def result_page():
 
     st.write(f"ここに文言を入れる")
 
-  # アンケートページに遷移するボタンを追加
-st.markdown(
+    # アンケートページに遷移するボタンを追加
+    st.markdown(
         """
-        <div style="text-align: center;">
+        <div style="text-align: center; margin-top: 30px;">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform" target="_blank">
                 <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
                     アンケートに進む
@@ -71,6 +70,7 @@ st.markdown(
             </a>
         </div>
         """, unsafe_allow_html=True)
+
 
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
