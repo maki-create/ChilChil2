@@ -1,61 +1,186 @@
 import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
+import pytz
 
-# サイドバーの非表示
 st.markdown("""
     <style>
         section[data-testid="stSidebar"] {display: none;}
     </style>
     """, unsafe_allow_html=True)
 
-# 診断結果をセッションから取得
-if "final_result" not in st.session_state:
-    st.error("診断結果が保存されていません。")
-    st.stop()
+# Streamlit Secretsから情報を取得
+google_credentials = st.secrets["google_credentials"]
 
-final_result = st.session_state["final_result"]
+# Google API 認証
+scope = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(google_credentials), scope)
+client = gspread.authorize(creds)
 
-# 診断結果に基づいて表示内容を切り替える
-def show_result(result):
-    if result == "ENFP":
-        st.title("診断結果: 活動家A")
-        st.write("""
-            活動家タイプのあなた。とにかく楽しいことやお祭り騒ぎが好きで、イベントやコラボカフェなどお出かけに積極的な活動家さん。
-            交友関係が広く、オタ活を通してできた友達と親友になることもあります。プライベートも充実していて毎日輝いているでしょう。
-            推しのすべてが好きなので、周りが推しの魅力に気づいてくれることに喜びを感じます。ただ、あまりの熱量に相手が圧倒されてしまうことも。
-            布教に失敗してもへこまないでね。
-        """)
+# Googleスプレッドシートを開く
+spreadsheet_id = st.secrets["google_credentials"]["spreadsheet_id"]
+sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
 
-    elif result == "活動家B":
-        st.title("診断結果: 活動家B")
-        st.write("""
-            活動家Bのあなたは、好奇心旺盛でどんなイベントにも興味津々。新しい経験を重視し、常に自分をアップデートしています。
-            SNSやオンラインでも精力的に活動しており、推し活を通じて得られる刺激に満ちた日々を楽しんでいます。
-            時にはちょっとした失敗があっても、その経験を次に活かす柔軟性を持っています。
-        """)
+# スコア計算関数
+def calculate_result(answers, label1, label2, label3):
+    score_mapping = {
+        "当てはまる": 2,
+        "やや当てはまる": 1,
+        "どちらでもない": 0,
+        "あまり当てはまらない": -1,
+        "当てはまらない": -2,
+    }
+    
+    total_score = sum(score_mapping[ans] for ans in answers)
 
-    elif result == "活動家C":
-        st.title("診断結果: 活動家C")
-        st.write("""
-            活動家Cタイプのあなたは、社交的で周囲に元気を与える存在です。仲間との絆を大切にしており、みんなで一緒に楽しむことが大好き。
-            推し活を通して人脈を広げ、集まった仲間たちと一緒に楽しい思い出を作ることに喜びを感じています。
-        """)
+    # スコアが0の場合、最初の質問のスコアを参照
+    if total_score == 0 and answers:
+        first_answer_score = score_mapping.get(answers[0], 0)
+        total_score = first_answer_score  # 最初の質問のスコアで決定
 
-    # ここに他の診断結果を追加していく (例: 活動家D, 活動家E, ...)
-
-    elif result == "活動家P":
-        st.title("診断結果: 活動家P")
-        st.write("""
-            活動家Pタイプのあなたは、自由奔放で楽しいことを最優先に考えます。新しいアイデアを追求し、常にワクワクするものに触れていたいタイプ。
-            イベントや推し活を通して、自己表現を大切にし、仲間との関係も大事にしています。
-        """)
-
+    if total_score > 0:
+        return label1
+    elif total_score < 0:
+        return label2
     else:
-        st.write("診断結果が見つかりませんでした。")
+        return label3
 
-# 診断結果を表示
-show_result(final_result)
+# 結果ページの表示関数
+def result_page():
+    if "final_result" in st.session_state:
+        st.title("診断結果")
+        st.write(f"あなたの診断結果は: {st.session_state['final_result']}")
+        # 必要に応じて、追加の結果やグラフを表示
 
-# 「元のアプリに戻る」ボタン
-if st.button("元のページに戻る"):
-    st.session_state.clear()  # セッション状態をリセット
-    st.experimental_rerun()  # アプリをリロード
+# Streamlit UI
+st.title("性格診断アプリ")
+st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。なお、(1)、(10)、(19)、(28)、(37)は、「どちらでもない」を選ばないでください")
+
+# 質問
+categories = {
+    "カテゴリー1": [
+        "(1)会場が遠くても積極的に遠征しに行くし、むしろモチベーションになっている", 
+        "(2)SNSでたくさんの人と交流するのが楽しい", 
+        "(3)イベントごと(コラボカフェ・ライブなど)が大好き。できればだれかと一緒に楽しみたい",
+        "(4)推しの配信や投稿にコメントをするのが日課",
+        "(5)SNSでグッズやチケットなどを積極的に交換している",
+        "(6)Instagram等で推し活コミュニティを築いている",
+        "(7)好きなキャラクターの誕生日は、生誕写真などを撮って盛大にお祝いする",
+        "(8)同じジャンルの友達はたくさん欲しいし、仲良くしたい",
+        "(9)ライブや演劇に参加したとき、隣の席の人に話しかける"
+    ],
+    "カテゴリー2": [
+        "(10)推しの絶対的な味方でいたい",
+        "(11)推しは近い存在でいてほしいが、夢をかなえる姿が見たいので、ビッグになってほしいと思う",
+        "(12)推しに「がんばって」「好きだよ」と言われるだけでがんばれる",
+        "(13)どんなヲタクとも仲良くなれる",
+        "(14)推しがどんな秘密を抱えていても受け入れられると思う",
+        "(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き",
+        "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
+        "(17)5年以上推しているコンテンツがある",
+        "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
+    ],
+     "カテゴリー3": [
+        "(1)会場が遠くても積極的に遠征しに行くし、むしろモチベーションになっている", 
+        "(2)SNSでたくさんの人と交流するのが楽しい", 
+        "(3)イベントごと(コラボカフェ・ライブなど)が大好き。できればだれかと一緒に楽しみたい",
+        "(4)推しの配信や投稿にコメントをするのが日課",
+        "(5)SNSでグッズやチケットなどを積極的に交換している",
+        "(6)Instagram等で推し活コミュニティを築いている",
+        "(7)好きなキャラクターの誕生日は、生誕写真などを撮って盛大にお祝いする",
+        "(8)同じジャンルの友達はたくさん欲しいし、仲良くしたい",
+        "(9)ライブや演劇に参加したとき、隣の席の人に話しかける"
+    ],
+    "カテゴリー4": [
+        "(10)推しの絶対的な味方でいたい",
+        "(11)推しは近い存在でいてほしいが、夢をかなえる姿が見たいので、ビッグになってほしいと思う",
+        "(12)推しに「がんばって」「好きだよ」と言われるだけでがんばれる",
+        "(13)どんなヲタクとも仲良くなれる",
+        "(14)推しがどんな秘密を抱えていても受け入れられると思う",
+        "(15)まだ見つかっていないコンテンツを見つけて成長を見守るのが好き",
+        "(16)推しではなくても人気芸能人の結婚報告に一喜一憂してしまう",
+        "(17)5年以上推しているコンテンツがある",
+        "(18)推しが何かがきっかけでバズったり、人気が上がったりすると自分のことのように嬉しい"
+    ]
+    # 他のカテゴリーも追加可能
+}
+
+responses = []  # 回答のリスト
+
+# 選択式質問の表示
+for category, questions in categories.items():
+    for idx, q in enumerate(questions):
+        col1, col2 = st.columns([2, 2])  # 質問とラジオボタンを横並びにする
+        with col1:
+            st.write(f"**{q}**")  # 質問を左に配置
+        with col2:
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
+            if idx not in [0, 9, 18, 27, 36]:  # 特定の質問以外は "どちらでもない" を追加
+                options.append("どちらでもない")
+
+            response = st.radio(
+                "",
+                options, 
+                key=f"{category}_{idx}", horizontal=True
+            )
+            responses.append(response)
+
+# **自由記述質問**
+st.title("自由記述アンケート")
+st.write("以下の質問に自由に回答してください。")
+
+free_responses = []
+free_questions = [
+    "あなたが一番好きな推し活のエピソードを教えてください。",
+    "推し活をしていて嬉しかったことは何ですか？",
+    "推し活をしていて大変だったことは何ですか？"
+]
+
+for i, question in enumerate(free_questions):
+    response = st.text_area(f"{i+1}. {question}", key=f"free_response_{i}")
+    free_responses.append(response)
+
+# 診断を実行ボタン
+if st.button("診断を実行"):
+    if len(responses) < 36:  # 質問が36個あるので、不足していればエラー
+        st.error("全ての質問に回答してください")
+        st.stop()
+
+    # 診断結果の計算
+    final_result = (
+        f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からないばかり答えています')}"
+    )
+
+    # 現在の日付と時間を取得
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Googleスプレッドシートに記録
+    try:
+        sheet.append_row([now, final_result] + responses + free_responses)
+    except Exception as e:
+        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+        st.stop()
+
+    # セッションに結果を保存
+    st.session_state["final_result"] = final_result
+
+    # 結果ページに遷移
+    st.session_state["result_page"] = True
+
+# メイン処理
+def main():
+    if "result_page" in st.session_state and st.session_state["result_page"]:
+        result_page()  # 結果ページを表示
+    else:
+        st.write("診断を実行してください")  # 診断ページを表示
+
+if __name__ == "__main__":
+    main()
