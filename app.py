@@ -49,14 +49,43 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
-# 診断結果ページ
-def result_page():
-    final_result = st.session_state["final_result"]
-    result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
+# 診断結果の対応表
+result_mapping = {
+    "EN": "カリスマ",
+    "ES": "冒険家",
+    "IN": "思索家",
+    "IS": "職人",
+    "ENTP": "発明家",
+    "ENTJ": "指揮官",
+    "INTP": "哲学者",
+    "INTJ": "戦略家",
+    "ENFP": "自由な精神",
+    "INFJ": "助言者",
+    "ESFP": "エンターテイナー",
+    "ISFP": "芸術家",
+    "ESTP": "挑戦者",
+    "ISTP": "職人気質",
+    "ESTJ": "管理者",
+    "ISTJ": "実務家"
+}
 
-    st.title("診断結果")
+# 診断結果に対応する説明文
+result_descriptions = {
+    "カリスマ": "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。",
+    "冒険家": "あなたは好奇心旺盛で、新しいことに挑戦するのが大好きです。",
+    "思索家": "深く物事を考え、理論的に問題を解決するのが得意です。",
+    "職人": "実践的なスキルに優れ、細かい作業が得意です。",
+    # 他のタイプも追加可能
+}
 
-# 診断結果の表示を大きくする
+# final_result を日本語の名前に変換
+result_name = result_mapping.get(final_result, "不明")  # 対応がない場合は「不明」に
+result_description = result_descriptions.get(result_name, "診断結果の説明が見つかりません。")
+
+# 診断結果の表示
+st.title("診断結果")
+
+# 診断結果を大きく表示
 st.markdown(f"""
     <h2 style='text-align: center; font-size: 36px; color: #ff5733;'>
         あなたの診断結果は: {result_name} ({final_result})
@@ -65,6 +94,7 @@ st.markdown(f"""
 
 # 診断結果の説明を表示
 st.write(f"**{result_description}**")
+
 
 
 # スコア計算関数
