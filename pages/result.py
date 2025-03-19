@@ -16,7 +16,7 @@ final_result = st.session_state["final_result"]
 
 # 診断結果に基づいて表示内容を切り替える
 def show_result(result):
-    if result == "活動家A":
+    if result == "ENFP":
         st.title("診断結果: 活動家A")
         st.write("""
             活動家タイプのあなた。とにかく楽しいことやお祭り騒ぎが好きで、イベントやコラボカフェなどお出かけに積極的な活動家さん。
