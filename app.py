@@ -150,29 +150,30 @@ def diagnosis_page():
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
 
-    # 診断ボタン
-    if st.button("診断を実行"):
-        if len(responses) < 4:  
-            st.error("全ての質問に回答してください")
-            st.stop()
+# 診断ボタン
+if st.button("診断を実行"):
+    if len(responses) < 4:  
+        st.error("全ての質問に回答してください")
+        st.stop()
 
-        final_result = (
-            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からないばかり答えています')}"
-            f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からないばかり答えています')}"
-        )
+    final_result = (
+        f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からないばかり答えています')}"
+        f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からないばかり答えています')}"
+    )
 
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        try:
-            sheet.append_row([now, final_result] + responses)
-        except Exception as e:
-            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-            st.stop()
+    try:
+        sheet.append_row([now, final_result] + responses)
+    except Exception as e:
+        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+        st.stop()
 
-        st.session_state["final_result"] = final_result
-        st.session_state["result_page"] = True  # 結果ページに遷移
+    st.session_state["final_result"] = final_result
+    st.session_state["result_page"] = True  # 結果ページに遷移
+    st.experimental_rerun()  # 診断結果ページへ遷移
 
 # メイン処理
 def main():
