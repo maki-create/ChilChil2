@@ -116,13 +116,10 @@ def diagnosis_page():
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
 
-  
-
-
 
     # 診断ボタン
     if st.button("診断を実行"):
-        if len(responses) < 4:  # 例では質問が4つなので調整
+        if len(responses) < 4:  # 現在は質問が4つなので調整
             st.error("全ての質問に回答してください")
             st.stop()
 
