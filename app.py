@@ -2,7 +2,6 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-import pytz
 
 st.markdown("""
     <style>
@@ -50,7 +49,6 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
-# 診断結果ページ
 def result_page():
     final_result = st.session_state["final_result"]
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
@@ -73,28 +71,6 @@ def result_page():
         </div>
         """, unsafe_allow_html=True)
 
-    # 戻るボタンを追加
-    st.markdown(
-        """
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="/">
-                <button style="background-color:#f44336; color:white; padding:10px 20px; border:none; cursor:pointer;">
-                    戻る
-                </button>
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
-
-# 診断ページの仮実装
-def diagnosis_page():
-    st.title("診断ページ")
-    # ユーザーからの回答を取得
-    responses = ["当てはまる", "やや当てはまる", "どちらでもない"]  # 仮の回答
-    # 診断結果を計算
-    final_result = calculate_result(responses, "ENFP", "ISFJ", "INTJ")
-    st.session_state["final_result"] = final_result  # 結果をセッションステートに保存
-    st.session_state["result_page"] = True  # 結果ページに遷移
-    st.write("診断結果が計算されました！")
 
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
@@ -105,7 +81,7 @@ def calculate_result(answers, label1, label2, label3):
         "あまり当てはまらない": -1,
         "当てはまらない": -2,
     }
-
+    
     total_score = sum(score_mapping[ans] for ans in answers)
 
     if total_score == 0 and answers:
@@ -118,19 +94,53 @@ def calculate_result(answers, label1, label2, label3):
     else:
         return label3
 
-# 日本時間のタイムゾーンを指定
-japan_timezone = pytz.timezone('Asia/Tokyo')
 
-# 現在の日本時間を取得
-now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
+import streamlit as st
 
-# スプレッドシートへの記録
-responses = ["当てはまる", "やや当てはまる", "どちらでもない"]  # 仮のデータ
-try:
-    # スプレッドシートへの行追加
-    sheet.append_row([now, st.session_state["final_result"]] + responses)
-except Exception as e:
-    st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+def diagnosis_page():
+    st.title("性格診断アプリ")
+    st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
+
+    categories = {
+        "カテゴリー1": ["(1)会場が遠くても積極的に遠征しに行く", "(2)SNSでたくさんの人と交流するのが楽しい"],
+        "カテゴリー2": ["(10)推しの絶対的な味方でいたい", "(11)推しは近い存在でいてほしい"]
+    }
+    
+    responses = []
+    for category, questions in categories.items():
+        for idx, q in enumerate(questions):
+            st.write(f"**{q}**")
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
+            if idx not in [0, 9, 18, 27, 36]:  
+                options.append("どちらでもない")
+            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
+            responses.append(response)
+
+
+    # 診断ボタン
+    if st.button("診断を実行"):
+        if len(responses) < 4:  # 現在は質問が4つなので調整
+            st.error("全ての質問に回答してください")
+            st.stop()
+
+        final_result = (
+            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からない')}"
+            f"{calculate_result(responses[1:2], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[2:3], 'T', 'F', '意味が分からない')}"
+            f"{calculate_result(responses[3:4], 'P', 'J', '意味が分からない')}"
+        )
+
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        try:
+            sheet.append_row([now, final_result] + responses)
+        except Exception as e:
+            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+            st.stop()
+
+        st.session_state["final_result"] = final_result
+        st.session_state["result_page"] = True
+        st.rerun()  
 
 # メイン処理
 def main():
