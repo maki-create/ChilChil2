@@ -27,7 +27,7 @@ st.session_state.setdefault("result_page", False)
 
 # 診断結果を人間向けのラベルと説明文に変換する辞書
 result_labels = {
-    "ENFP": ("自由な精神", "あなたは好奇心旺盛で、新しいことに挑戦するのが好きです。"),
+    "ENFP": ("自由な精神", "あなたは好奇心旺盛で、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
     "ENTP": ("アイデアマン", "あなたは新しいアイデアを生み出すのが得意なタイプです。"),
     "INTJ": ("戦略家", "あなたは計画的に物事を進める戦略家タイプです。"),
     "INFJ": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。"),
