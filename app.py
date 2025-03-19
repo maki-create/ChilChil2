@@ -75,7 +75,7 @@ def result_page():
     st.markdown(
         """
         <div style="text-align: center; margin-top: 20px;">
-            <a href="javascript:history.back()">
+            <a href="https://chilchil2-qxehnzkrhvqchpqqgjsgum.streamlit.app/?page=result#63d94710">
                 <button style="background-color:#f44336; color:white; padding:10px 20px; border:none; cursor:pointer;">
                     戻る
                 </button>
