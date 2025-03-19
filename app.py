@@ -117,7 +117,8 @@ def result_page():
     # 戻るボタン
     if st.button("元のページに戻る"):
         st.session_state["result_page"] = False  # 診断ページに戻る
-        st.experimental_set_query_params(page="diagnosis")
+        # Corrected: use query_params to set the page
+        st.query_params = {"page": "diagnosis"}
 
 # 診断ページ
 def diagnosis_page():
@@ -164,7 +165,7 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True  # 結果ページに遷移
-        st.experimental_set_query_params(page="result")
+        st.query_params = {"page": "result"}
 
 # メイン処理
 def main():
