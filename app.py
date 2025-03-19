@@ -121,7 +121,6 @@ def result_page():
         st.session_state["page"] = "diagnosis"  # 診断ページに遷移
         st.experimental_rerun()  # ページを再読み込み
 
-# 診断ページ
 def diagnosis_page():
     st.title("性格診断アプリ")
     st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
@@ -138,7 +137,7 @@ def diagnosis_page():
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
             options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"]
-            answer = st.radio(f"選んでください ({category})", options)
+            answer = st.radio(f"選んでください ({category})", options, key=f"{category}_{idx}")  # keyを追加
             responses.append(answer)
 
     if st.button("結果を表示"):
