@@ -176,15 +176,5 @@ def main():
     else:
         diagnosis_page()
 
-# 診断ページ
-def diagnosis_page():
-    st.title("性格診断アプリ")
-    # Additional logic for diagnosis page
-
-# 結果ページ
-def result_page():
-    st.title("診断結果")
-    # Additional logic for result page
-
 if __name__ == "__main__":
     main()
