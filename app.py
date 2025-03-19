@@ -164,7 +164,8 @@ if st.button("診断を実行"):
     # セッションに結果を保存
     st.session_state["final_result"] = final_result
 
-    # 結果表示ページに遷移
-    # st.switch_page("result") を使って結果ページに遷移する
-    st.session_state["result_page"] = True  # セッションに遷移フラグを追加
-    st.experimental_rerun()  # ページをリロードして結果ページに遷移
+    # 結果ページへ遷移するフラグを立てる
+    st.session_state["result_page"] = True
+
+    # ページをリロードして結果ページを表示
+    st.experimental_rerun()
