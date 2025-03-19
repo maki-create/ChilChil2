@@ -29,25 +29,35 @@ sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選�
 st.session_state.setdefault("final_result", None)
 st.session_state.setdefault("result_page", False)
 
-# 診断結果を人間向けのラベルに変換する辞書
+# 診断結果を人間向けのラベルと説明文に変換する辞書
 result_labels = {
-    "EN": "カリスマ",
-    "ES": "エネルギッシュ",
-    "IN": "思慮深い",
-    "IS": "職人肌",
-    "ENTP": "アイデアマン",
-    "INTJ": "戦略家",
-    "ESFP": "エンターテイナー",
-    "ISTJ": "管理者",
-    "INFJ": "理想主義者",
-    "ISTP": "実践派",
-    "ENTJ": "指導者",
-    "ISFJ": "献身的",
-    "ENFJ": "インスピレーションメーカー",
-    "ESTJ": "リーダー気質",
-    "ESTP": "冒険家",
-    "INTP": "論理的思考家"
+    "ENFP": ("カリスマ", "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。自信を持ち、積極的に行動することでさらに成長できます。"),
+    "ES": ("エネルギッシュ", "あなたは活発でエネルギッシュな性格です。常に新しいことに挑戦し、周囲を巻き込んで楽しむタイプです。"),
+    "IN": ("思慮深い", "あなたは物事を深く考える傾向があります。慎重な判断ができ、洞察力に優れています。"),
+    "IS": ("職人肌", "あなたはコツコツと努力を積み重ねる職人タイプです。自分のペースで着実に成果を出します。"),
+    "ENTP": ("アイデアマン", "あなたは新しいアイデアを生み出すのが得意なタイプです。柔軟な発想力で周囲を驚かせます。"),
+    "INTJ": ("戦略家", "あなたは計画的に物事を進める戦略家タイプです。論理的に考え、目標達成に向けて努力します。"),
+    "ESFP": ("エンターテイナー", "あなたは明るく社交的で、人を楽しませるのが得意です。周囲を笑顔にする力を持っています。"),
+    "ISTJ": ("管理者", "あなたは責任感が強く、ルールを大切にするタイプです。しっかりと物事を管理し、着実に進めます。"),
+    "INFJ": ("理想主義者", "あなたは高い理想を持ち、それに向かって努力するタイプです。人の気持ちを理解し、共感力も高いです。"),
+    "ISTP": ("実践派", "あなたは実践的なスキルを持ち、手を動かしながら学ぶのが得意なタイプです。冷静な判断力もあります。"),
+    "ENTJ": ("指導者", "あなたはリーダーシップがあり、周囲を引っ張る力を持っています。目標に向かって突き進むタイプです。"),
+    "ISFJ": ("献身的", "あなたは周囲に気を配り、思いやりを大切にするタイプです。人のサポートをするのが得意です。"),
+    "ENFJ": ("インスピレーションメーカー", "あなたは周囲を鼓舞し、前向きな影響を与えるタイプです。リーダーとして活躍できる素質があります。"),
+    "ESTJ": ("リーダー気質", "あなたは現実的でリーダーシップに優れたタイプです。組織をまとめ、しっかりと管理することができます。"),
+    "ESTP": ("冒険家", "あなたはスリルを楽しむタイプで、新しいことに挑戦するのが好きです。行動力があり、柔軟に動けます。"),
+    "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
+
+# 診断結果ページ
+def result_page():
+    final_result = st.session_state["final_result"]
+    result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
+
+    st.title("診断結果")
+    st.write(f"あなたの診断結果は: **{result_name}** ({final_result})")
+    st.write(f"**{result_description}**")
+
 
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
@@ -71,13 +81,6 @@ def calculate_result(answers, label1, label2, label3):
     else:
         return label3
 
-# 結果ページの表示
-def result_page():
-    final_result = st.session_state["final_result"]
-    translated_result = result_labels.get(final_result, "診断結果不明")
-
-    st.title("診断結果")
-    st.write(f"あなたの診断結果は: **{translated_result}** ({final_result})")
 
 # 診断ページ
 def diagnosis_page():
@@ -106,8 +109,10 @@ def diagnosis_page():
             st.stop()
 
         final_result = (
-            f"{calculate_result(responses[0:2], 'E', 'I', '意味が分からない')}"
-            f"{calculate_result(responses[2:4], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からない')}"
+            f"{calculate_result(responses[1:2], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[2:3], 'T', 'F', '意味が分からない')}"
+            f"{calculate_result(responses[3:4], 'P', 'J', '意味が分からない')}"
         )
 
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -120,7 +125,7 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-        st.rerun()  # 🔄 修正ポイント
+        st.rerun()  
 
 # メイン処理
 def main():
