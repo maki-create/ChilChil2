@@ -137,4 +137,18 @@ def diagnosis_page():
     for category, questions in categories.items():
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
-            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまら
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない", "どちらでもない"]
+            answer = st.radio(f"選んでください ({category})", options)
+            responses.append(answer)
+
+    if st.button("結果を表示"):
+        result = calculate_result(responses, "ENFP", "INFP", "ISTJ")
+        st.session_state["final_result"] = result
+        st.session_state["result_page"] = True
+        st.experimental_rerun()
+
+# ページ表示
+if st.session_state["page"] == "diagnosis":
+    diagnosis_page()
+elif st.session_state["result_page"]:
+    result_page()
