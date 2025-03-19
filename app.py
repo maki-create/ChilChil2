@@ -121,7 +121,7 @@ except Exception as e:
             st.error(f"スプレッドシートへの記録に失敗しました: {e}")
             st.stop()
 
-    st.session_state["final_result"] = final_result
+    st.session_state["final_result"] = final_result 
     st.session_state["result_page"] = True
     st.rerun()  
 
