@@ -123,10 +123,10 @@ def result_page():
     st.write(f"アンケートにご協力ください")
     st.write(f"https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform")
     
-    # 戻るボタンの追加
+    # 戻るボタン
     if st.button("元のページに戻る"):
-        st.session_state["result_page"] = False  # 診断ページに戻る
-        # st.experimental_rerun()は削除
+        st.session_state["app"] = False  # 診断ページに戻る
+       
 
 # 診断ページ
 def diagnosis_page():
