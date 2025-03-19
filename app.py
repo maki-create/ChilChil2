@@ -71,6 +71,19 @@ def result_page():
         </div>
         """, unsafe_allow_html=True)
 
+    # 戻るボタンを追加
+    st.markdown(
+        """
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="javascript:history.back()">
+                <button style="background-color:#f44336; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                    戻る
+                </button>
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+
+
 
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
