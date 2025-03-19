@@ -139,8 +139,9 @@ def diagnosis_page():
             st.stop()
 
         st.session_state["final_result"] = final_result
-        st.session_state["result_page"] = True
-    
+        st.session_state["result_page"] = True  # 結果ページに遷移
+        st.experimental_rerun()  # 結果ページを表示するために再実行
+
 
 # メイン処理
 def main():
