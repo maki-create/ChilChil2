@@ -110,46 +110,15 @@ def calculate_result(answers, label1, label2, label3):
 
 import streamlit as st
 
-def diagnosis_page():
-    st.title("性格診断アプリ")
-    st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
+import pytz
+from datetime import datetime
 
-    categories = {
-        "カテゴリー1": ["(1)会場が遠くても積極的に遠征しに行く", "(2)SNSでたくさんの人と交流するのが楽しい"],
-        "カテゴリー2": ["(10)推しの絶対的な味方でいたい", "(11)推しは近い存在でいてほしい"]
-    }
-    
-    responses = []
-    for category, questions in categories.items():
-        for idx, q in enumerate(questions):
-            st.write(f"**{q}**")
-            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
-            if idx not in [0, 9, 18, 27, 36]:  
-                options.append("どちらでもない")
-            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
-            responses.append(response)
-
-
-    # 診断ボタン
-    if st.button("診断を実行"):
-        if len(responses) < 4:  # 現在は質問が4つなので調整
-            st.error("全ての質問に回答してください")
-            st.stop()
-
-        final_result = (
-            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からない')}"
-            f"{calculate_result(responses[1:2], 'N', 'S', '意味が分からない')}"
-            f"{calculate_result(responses[2:3], 'T', 'F', '意味が分からない')}"
-            f"{calculate_result(responses[3:4], 'P', 'J', '意味が分からない')}"
-        )
-
-        # 日本時間のタイムゾーンを指定
+# 日本時間のタイムゾーンを指定
 japan_timezone = pytz.timezone('Asia/Tokyo')
 
 # 現在の日本時間を取得
 now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
-now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 
 try:
             sheet.append_row([now, final_result] + responses)
