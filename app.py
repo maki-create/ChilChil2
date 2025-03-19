@@ -61,14 +61,16 @@ def result_page():
     st.write(f"ここに文言を入れる")
 
   # アンケートページに遷移するボタンを追加
-    if st.button("アンケートにご協力ください"):
-        st.markdown(
-            """
+   st.markdown(
+        """
+        <div style="text-align: center;">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform" target="_blank">
-            
+                <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                    アンケートに進む
+                </button>
             </a>
-            """, unsafe_allow_html=True)
-
+        </div>
+        """, unsafe_allow_html=True)
 
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
