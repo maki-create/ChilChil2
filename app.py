@@ -28,13 +28,21 @@ st.session_state.setdefault("result_page", False)
 # 診断結果を人間向けのラベルと説明文に変換する辞書
 result_labels = {
     "ENFP": ("自由な精神", "あなたは好奇心旺盛で、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
-    "ENTP": ("アイデアマン", "あなたは新しいアイデアを生み出すのが得意なタイプです。"),
-    "INTJ": ("戦略家", "あなたは計画的に物事を進める戦略家タイプです。"),
-    "INFJ": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。"),
-    "ESTP": ("冒険家", "あなたはスリルを楽しむタイプで、新しいことに挑戦するのが好きです。"),
-    "ESFP": ("エンターテイナー", "あなたは明るく社交的で、人を楽しませるのが得意です。"),
-    "ISTJ": ("管理者", "あなたは責任感が強く、ルールを大切にするタイプです。"),
-    "ISFJ": ("献身的", "あなたは周囲に気を配り、思いやりを大切にするタイプです。"),
+    "ENFJ": ("自由な精神", "あなたは好奇心旺盛で、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ENTJ": ("自由な精神", "あなたは好奇心旺盛で、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ENTP": ("アイデアマン", "あなたは新しいアイデアを生み出すのが得意なタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ESFP": ("エンターテイナー", "あなたは明るく社交的で、人を楽しませるのが得意です。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ESTP": ("冒険家", "あなたはスリルを楽しむタイプで、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ESFJ": ("冒険家", "あなたはスリルを楽しむタイプで、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ESTJ": ("冒険家", "あなたはスリルを楽しむタイプで、新しいことに挑戦するのが好きです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "INTJ": ("戦略家", "あなたは計画的に物事を進める戦略家タイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "INTP": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "INFJ": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "INFP": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ISFP": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ISFJ": ("助言者", "あなたは高い理想を持ち、それに向かって努力するタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ISTJ": ("管理者", "あなたは責任感が強く、ルールを大切にするタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
+    "ISFJ": ("献身的", "あなたは周囲に気を配り、思いやりを大切にするタイプです。https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform"),
 }
 
 # スコア計算関数
