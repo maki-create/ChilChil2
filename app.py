@@ -58,7 +58,6 @@ result_mapping = {
     "ENTJ": "指揮官",
     "INTP": "哲学者",
     "INTJ": "戦略家",
-    "ENFP": "自由な精神",
     "INFJ": "助言者",
     "ESFP": "エンターテイナー",
     "ISFP": "芸術家",
@@ -168,7 +167,7 @@ def diagnosis_page():
 
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-        st.rerun()  # 🔄 修正ポイント
+        st.experimental_rerun()  # 🔄 修正ポイント
 
 # メイン処理
 def main():
