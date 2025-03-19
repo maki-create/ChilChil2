@@ -108,11 +108,6 @@ def calculate_result(answers, label1, label2, label3):
         return label3
 
 
-import streamlit as st
-
-import pytz
-from datetime import datetime
-
 # 日本時間のタイムゾーンを指定
 japan_timezone = pytz.timezone('Asia/Tokyo')
 
