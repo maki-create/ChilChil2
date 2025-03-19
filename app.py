@@ -48,34 +48,6 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
-# 診断結果の対応表
-result_mapping = {
-    "ENFP": "カリスマ",
-    "ESFJ": "冒険家",
-    "INFP": "思索家",
-    "ISTP": "職人",
-    "ENTP": "発明家",
-    "ENTJ": "指揮官",
-    "INTP": "哲学者",
-    "INTJ": "戦略家",
-    "INFJ": "助言者",
-    "ESFP": "エンターテイナー",
-    "ISFP": "芸術家",
-    "ESTP": "挑戦者",
-    "ISTP": "職人気質",
-    "ESTJ": "管理者",
-    "ISTJ": "実務家"
-}
-
-# 診断結果に対応する説明文
-result_descriptions = {
-    "カリスマ": "あなたはカリスマ性があり、周囲の人を引きつける魅力を持っています。",
-    "冒険家": "あなたは好奇心旺盛で、新しいことに挑戦するのが大好きです。",
-    "思索家": "深く物事を考え、理論的に問題を解決するのが得意です。",
-    "職人": "実践的なスキルに優れ、細かい作業が得意です。",
-    # 他のタイプは文言決定次第流し込み
-}
-
 # スコア計算関数
 def calculate_result(answers, label1, label2, label3):
     score_mapping = {
@@ -150,30 +122,30 @@ def diagnosis_page():
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
 
-# 診断ボタン
-if st.button("診断を実行"):
-    if len(responses) < 4:  
-        st.error("全ての質問に回答してください")
-        st.stop()
+    # 診断ボタン
+    if st.button("診断を実行"):
+        if len(responses) < len(categories) * 2:  # 質問数と同じ数だけ回答されているか確認
+            st.error("全ての質問に回答してください")
+            st.stop()
 
-    final_result = (
-        f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
-        f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からないばかり答えています')}"
-        f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からないばかり答えています')}"
-        f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からないばかり答えています')}"
-    )
+        final_result = (
+            f"{calculate_result(responses[0:1], 'E', 'I', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[2:3], 'N', 'S', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[4:5], 'T', 'F', '意味が分からないばかり答えています')}"
+            f"{calculate_result(responses[6:7], 'P', 'J', '意味が分からないばかり答えています')}"
+        )
 
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    try:
-        sheet.append_row([now, final_result] + responses)
-    except Exception as e:
-        st.error(f"スプレッドシートへの記録に失敗しました: {e}")
-        st.stop()
+        try:
+            sheet.append_row([now, final_result] + responses)
+        except Exception as e:
+            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+            st.stop()
 
-    st.session_state["final_result"] = final_result
-    st.session_state["result_page"] = True  # 結果ページに遷移
-    st.experimental_rerun()  # 診断結果ページへ遷移
+        st.session_state["final_result"] = final_result
+        st.session_state["result_page"] = True  # 結果ページに遷移
+        st.experimental_rerun()  # 診断結果ページへ遷移
 
 # メイン処理
 def main():
