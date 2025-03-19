@@ -55,7 +55,10 @@ def result_page():
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
 
     st.title("診断結果")
-    st.write(f"あなたの診断結果は: **{result_name}** ({final_result})")
+    st.write(f"あなたの診断結果は: **{result_name}**")
+    st.write(f"**{result_description}**")
+
+    st.write(f"ここに文言を入れる")
     st.write(f"**{result_description}**")
 
 
@@ -82,7 +85,8 @@ def calculate_result(answers, label1, label2, label3):
         return label3
 
 
-# 診断ページ
+import streamlit as st
+
 def diagnosis_page():
     st.title("性格診断アプリ")
     st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
@@ -101,6 +105,19 @@ def diagnosis_page():
                 options.append("どちらでもない")
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
+
+    # アンケートページに遷移するボタンを追加
+    if st.button("アンケートにご協力ください"):
+        st.markdown(
+            """
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform" target="_blank">
+                <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                    アンケートに進む
+                </button>
+            </a>
+            """, unsafe_allow_html=True)
+
+
 
     # 診断ボタン
     if st.button("診断を実行"):
