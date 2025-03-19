@@ -92,8 +92,8 @@ def diagnosis_page():
     responses = ["当てはまる", "やや当てはまる", "どちらでもない"]  # 仮の回答
     # 診断結果を計算
     final_result = calculate_result(responses, "ENFP", "ISFJ", "INTJ")
-    st.session_state["final_result"] = final_result
-    st.session_state["result_page"] = True
+    st.session_state["final_result"] = final_result  # 結果をセッションステートに保存
+    st.session_state["result_page"] = True  # 結果ページに遷移
     st.write("診断結果が計算されました！")
 
 # スコア計算関数
@@ -127,13 +127,13 @@ now = datetime.now(japan_timezone).strftime("%Y-%m-%d %H:%M:%S")
 # スプレッドシートへの記録
 responses = ["当てはまる", "やや当てはまる", "どちらでもない"]  # 仮のデータ
 try:
+    # スプレッドシートへの行追加
     sheet.append_row([now, st.session_state["final_result"]] + responses)
 except Exception as e:
     st.error(f"スプレッドシートへの記録に失敗しました: {e}")
     st.stop()
 
-st.session_state["final_result"] = final_result
-st.session_state["result_page"] = True
+st.session_state["result_page"] = True  # 診断結果ページへ遷移
 st.rerun()
 
 # メイン処理
