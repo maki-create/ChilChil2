@@ -55,8 +55,16 @@ def result_page():
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
 
     st.title("診断結果")
-    st.write(f"あなたの診断結果は: **{result_name}** ({final_result})")
-    st.write(f"**{result_description}**")
+
+# 診断結果の表示を大きくする
+st.markdown(f"""
+    <h2 style='text-align: center; font-size: 36px; color: #ff5733;'>
+        あなたの診断結果は: {result_name} ({final_result})
+    </h2>
+    """, unsafe_allow_html=True)
+
+# 診断結果の説明を表示
+st.write(f"**{result_description}**")
 
 
 # スコア計算関数
