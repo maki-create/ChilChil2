@@ -132,8 +132,15 @@ def diagnosis_page():
 
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        
+        try:
+            sheet.append_row([now, final_result] + responses)
+        except Exception as e:
+            st.error(f"スプレッドシートへの記録に失敗しました: {e}")
+            st.stop()
 
+        st.session_state["final_result"] = final_result
+        st.session_state["result_page"] = True
+        st.rerun()  
 
 # メイン処理
 def main():
