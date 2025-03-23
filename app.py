@@ -143,7 +143,7 @@ def diagnosis_page():
         )
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-        st.experimental_rerun()
+        st.rerun()
 
         
         
