@@ -141,6 +141,11 @@ def diagnosis_page():
             f"{calculate_result(responses[2:3], 'T', 'F', '意味が分からない')}"
             f"{calculate_result(responses[3:4], 'P', 'J', '意味が分からない')}"
         )
+
+        # **スプレッドシートにデータを記録**
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 現在の時刻
+        sheet.append_row([now, final_result] + responses)  # スプレッドシートに保存
+        
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
         st.rerun()
