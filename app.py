@@ -143,8 +143,6 @@ def diagnosis_page():
         )
         st.session_state["final_result"] = final_result
         st.session_state["result_page"] = True
-
-        
         st.experimental_rerun()
 
         
@@ -152,7 +150,7 @@ def diagnosis_page():
 
 # メイン処理
 def main():
-    if st.session_state.get("result_page", True):
+    if st.session_state.get("result_page", Fales):
         result_page()
     else:
         diagnosis_page()
