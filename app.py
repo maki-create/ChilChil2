@@ -70,6 +70,27 @@ def result_page():
             </a>
         </div>
         """, unsafe_allow_html=True)
+# アンケートページに遷移するボタンを追加
+    st.markdown(
+        """
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="# アンケートページに遷移するボタンを追加
+    st.markdown(
+        """
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform" target="_blank">
+                <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                    アンケートに進む
+                </button>
+            </a>
+        </div>
+        """, unsafe_allow_html=True)" target="_blank">
+                <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                    アンケートに進む
+                </button>
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 # スコア計算関数
