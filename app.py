@@ -72,7 +72,7 @@ def result_page():
         """, unsafe_allow_html=True)
 # アンケートページに遷移するボタンを追加
     st.markdown(
-    """
+        """
         <div style="text-align: center; margin-top: 30px;">
             <a href="# アンケートページに遷移するボタンを追加
     st.markdown(
