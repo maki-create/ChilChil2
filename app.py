@@ -73,9 +73,9 @@ def result_page():
     st.markdown(
         """
         <div style="text-align: center; margin-top: 30px;">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform" target="_blank">
+            <a href="https://chilchil2-qxehnzkrhvqchpqqgjsgum.streamlit.app/" target="_blank">
                 <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
-                    アンケートに進む
+                    元のページに戻る
                 </button>
             </a>
         </div>
