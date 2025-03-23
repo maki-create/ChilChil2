@@ -150,7 +150,7 @@ def diagnosis_page():
 
 # メイン処理
 def main():
-    if st.session_state.get("result_page", Fales):
+    if st.session_state.get("result_page", True):
         result_page()
     else:
         diagnosis_page()
