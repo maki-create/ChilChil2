@@ -60,7 +60,7 @@ def result_page():
     final_result = st.session_state["final_result"]
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
 
-    # 診断結果番号を表示
+    # 診断結果番号を生成
     diagnosis_id = st.session_state["diagnosis_id"]
     
     st.title("診断結果")
@@ -69,8 +69,8 @@ def result_page():
 
     st.write(f"診断結果番号: {diagnosis_id}")
 
-    # Googleフォームリンク（パラメータ付き）
-    google_form_url = f"https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform?usp=pp_url&entry.123456789={st.session_state['name']}&entry.987654321={diagnosis_id}"
+    # GoogleフォームURL（パラメータ付き）
+    google_form_url = f"https://docs.google.com/forms/d/e/1FAIpQLScnQ2px9H6bBa_oFc1J1L0CwFBpwqjx9Lx8PtzpTEYWdlG04w/viewform?usp=pp_url&entry.2083747518={st.session_state['name']}&entry.543321={diagnosis_id}"
 
     st.markdown(
         f"""
@@ -93,6 +93,7 @@ def result_page():
             </a>
         </div>
         """, unsafe_allow_html=True)
+
 
 
 def calculate_result(answers, label1, label2, label3):
