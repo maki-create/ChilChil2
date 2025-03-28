@@ -2,6 +2,7 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import random  # 番号のランダム生成のため
 
 st.markdown("""
     <style>
@@ -28,6 +29,8 @@ sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選�
 # セッションステートの初期化（エラー回避）
 st.session_state.setdefault("final_result", None)
 st.session_state.setdefault("result_page", False)
+st.session_state.setdefault("user_name", None)
+st.session_state.setdefault("user_id", None)
 
 # 診断結果を人間向けのラベルと説明文に変換する辞書
 result_labels = {
@@ -49,6 +52,98 @@ result_labels = {
     "INTP": ("論理的思考家", "あなたは理論的に物事を考えるのが得意です。知識欲が旺盛で、深く掘り下げることを好みます。"),
 }
 
+# スコア計算関数
+def calculate_result(answers, label1, label2, label3):
+    score_mapping = {
+        "当てはまる": 2,
+        "やや当てはまる": 1,
+        "どちらでもない": 0,
+        "あまり当てはまらない": -1,
+        "当てはまらない": -2,
+    }
+    
+    total_score = sum(score_mapping[ans] for ans in answers)
+
+    if total_score == 0 and answers:
+        total_score = score_mapping.get(answers[0], 0)
+
+    if total_score > 0:
+        return label1
+    elif total_score < 0:
+        return label2
+    else:
+        return label3
+
+
+# 診断ページ
+def diagnosis_page():
+    st.title("性格診断アプリ")
+    st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
+    
+    # 名前入力欄
+    user_name = st.text_input("お名前を入力してください", "")
+    if user_name:
+        st.session_state["user_name"] = user_name
+
+    # カテゴリーごとの質問
+    categories = {
+        "カテゴリー1": ["(1)IかEかを判断する質問", "(2)IかEかを判断する質問", "(3)IかEかを判断する質問", "(4)IかEかを判断する質問", "(5)IかEかを判断する質問", "(6)IかEかを判断する質問", "(7)IかEかを判断する質問", "(8)IかEかを判断する質問", "(9)IかEかを判断する質問"],
+        "カテゴリー2": ["(10)NかSかを判断する質問", "(11)NかSかを判断する質問", "(12)NかSかを判断する質問", "(13)NかSかを判断する質問", "(14)NかSかを判断する質問", "(15)NかSかを判断する質問", "(16)NかSかを判断する質問", "(17)NかSかを判断する質問", "(18)NかSかを判断する質問"],
+        "カテゴリー3": ["(19)TかFかを判断する質問", "(20)TかFかを判断する質問", "(21)TかFかを判断する質問", "(22)TかFかを判断する質問", "(23)TかFかを判断する質問", "(24)TかFかを判断する質問", "(25)TかFかを判断する質問", "(26)TかFかを判断する質問", "(27)TかFかを判断する質問"],
+        "カテゴリー4": ["(28)PかJかを判断する質問", "(29)PかJかを判断する質問", "(30)PかJかを判断する質問", "(31)PかJかを判断する質問", "(32)PかJかを判断する質問", "(33)PかJかを判断する質問", "(34)PかJかを判断する質問", "(35)PかJかを判断する質問", "(36)PかJかを判断する質問"]
+    }
+    
+    responses = []
+    for category, questions in categories.items():
+        for idx, q in enumerate(questions):
+            st.write(f"**{q}**")
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
+            if idx not in [0, 9, 18, 27, 36]:  
+                options.append("どちらでもない")
+            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
+            responses.append(response)
+
+    # 診断ボタン
+    if st.button("診断を実行"):
+        if len(responses) < 36:  # 現在は質問が36個なので調整
+            st.error("全ての質問に回答してください")
+            st.stop()
+
+        final_result = (
+            f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
+            f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からない')}"
+            f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からない')}"
+            f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からない')}"
+        )
+
+        # ユーザーIDの生成
+        user_id = random.randint(100000, 999999)  # ランダムな番号生成
+        st.session_state["user_id"] = user_id
+
+        # **スプレッドシートにデータを記録**
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 現在の時刻
+        sheet.append_row([now, user_id, final_result] + responses)  # スプレッドシートに保存
+        
+        # GoogleフォームのURLにパラメータを追加
+        form_url = f"https://docs.google.com/forms/d/e/1FAIpQLSetyoLX4bXlkEGmRhhhDGltfLDCAg52NDThs_S0TWNeo7ienA/viewform?entry.123456={user_name}&entry.654321={final_result}&entry.789012={user_id}"
+
+        # フォームに遷移するボタンを表示
+        st.markdown(
+            f"""
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="{form_url}" target="_blank">
+                    <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                        アンケートに進む
+                    </button>
+                </a>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.session_state["final_result"] = final_result
+        st.session_state["result_page"] = True
+        st.rerun()
+
+# 診断結果ページ
 def result_page():
     final_result = st.session_state["final_result"]
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
@@ -81,77 +176,6 @@ def result_page():
         </div>
         """, unsafe_allow_html=True)
 
-
-# スコア計算関数
-def calculate_result(answers, label1, label2, label3):
-    score_mapping = {
-        "当てはまる": 2,
-        "やや当てはまる": 1,
-        "どちらでもない": 0,
-        "あまり当てはまらない": -1,
-        "当てはまらない": -2,
-    }
-    
-    total_score = sum(score_mapping[ans] for ans in answers)
-
-    if total_score == 0 and answers:
-        total_score = score_mapping.get(answers[0], 0)
-
-    if total_score > 0:
-        return label1
-    elif total_score < 0:
-        return label2
-    else:
-        return label3
-
-
-import streamlit as st
-
-def diagnosis_page():
-    st.title("性格診断アプリ")
-    st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
-
-    categories = {
-        "カテゴリー1": ["(1)IかEかを判断する質問", "(2)IかEかを判断する質問", "(3)IかEかを判断する質問", "(4)IかEかを判断する質問", "(5)IかEかを判断する質問", "(6)IかEかを判断する質問", "(7)IかEかを判断する質問", "(8)IかEかを判断する質問", "(9)IかEかを判断する質問"],
-        "カテゴリー2": ["(10)NかSかを判断する質問", "(11)NかSかを判断する質問", "(12)NかSかを判断する質問", "(13)NかSかを判断する質問", "(14)NかSかを判断する質問", "(15)NかSかを判断する質問", "(16)NかSかを判断する質問", "(17)NかSかを判断する質問", "(18)NかSかを判断する質問"],
-        "カテゴリー3": ["(19)TかFかを判断する質問", "(20)TかFかを判断する質問", "(21)TかFかを判断する質問", "(22)TかFかを判断する質問", "(23)TかFかを判断する質問", "(24)TかFかを判断する質問", "(25)TかFかを判断する質問", "(26)TかFかを判断する質問", "(27)TかFかを判断する質問"],
-        "カテゴリー4": ["(28)PかJかを判断する質問", "(29)PかJかを判断する質問", "(30)PかJかを判断する質問", "(31)PかJかを判断する質問", "(32)PかJかを判断する質問", "(33)PかJかを判断する質問", "(34)PかJかを判断する質問", "(35)PかJかを判断する質問", "(36)PかJかを判断する質問"]
-    }
-    
-    responses = []
-    for category, questions in categories.items():
-        for idx, q in enumerate(questions):
-            st.write(f"**{q}**")
-            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
-            if idx not in [0, 9, 18, 27, 36]:  
-                options.append("どちらでもない")
-            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
-            responses.append(response)
-
-
-    # 診断ボタン
-    if st.button("診断を実行"):
-        if len(responses) < 4:  # 現在は質問が4つなので調整
-            st.error("全ての質問に回答してください")
-            st.stop()
-
-        final_result = (
-            f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
-            f"{calculate_result(responses[9:18], 'N', 'S', '意味が分からない')}"
-            f"{calculate_result(responses[18:27], 'T', 'F', '意味が分からない')}"
-            f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からない')}"
-        )
-
-        # **スプレッドシートにデータを記録**
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 現在の時刻
-        sheet.append_row([now, final_result] + responses)  # スプレッドシートに保存
-        
-        st.session_state["final_result"] = final_result
-        st.session_state["result_page"] = True
-        st.rerun()
-
-        
-        
 
 # メイン処理
 def main():
