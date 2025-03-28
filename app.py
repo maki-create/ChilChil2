@@ -141,8 +141,13 @@ def diagnosis_page():
                 options.append("どちらでもない")
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
-
-    if st.button("診断を実行"):
+            
+     if st.button("診断を実行"):
+        # 名前が入力されていない場合、エラーを表示して中断
+        if not st.session_state["name"]:
+            st.error("お名前を入力してください。")
+            return
+            
         if len(responses) < 36:
             st.error("全ての質問に回答してください")
             return
