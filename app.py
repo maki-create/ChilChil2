@@ -29,7 +29,7 @@ sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選�
 # セッションステートの初期化（エラー回避）
 st.session_state.setdefault("final_result", None)
 st.session_state.setdefault("result_page", False)
-st.session_state.setdefault("diagnosis_id", None)  # 診断結果番号のためのセッション変数
+st.session_state.setdefault("diagnosis_id", None)  
 
 # 診断結果を人間向けのラベルと説明文に変換する辞書
 result_labels = {
@@ -160,7 +160,7 @@ def diagnosis_page():
         )
 
         # 診断結果番号を生成
-        diagnosis_id = random.randint(100000, 999999)
+        diagnosis_id = random.randint(10000000, 99999999)
         st.session_state["diagnosis_id"] = diagnosis_id
 
         # スプレッドシートに名前と診断結果番号を記録
