@@ -52,6 +52,11 @@ result_labels = {
 }
 
 def result_page():
+    # 'name'がセッションに保存されているかチェック
+    if 'name' not in st.session_state or not st.session_state['name']:
+        st.error("名前を入力してください。")
+        return
+
     final_result = st.session_state["final_result"]
     result_name, result_description = result_labels.get(final_result, ("診断結果不明", "該当する診断結果が見つかりませんでした。"))
 
@@ -88,6 +93,7 @@ def result_page():
             </a>
         </div>
         """, unsafe_allow_html=True)
+
 
 def calculate_result(answers, label1, label2, label3):
     score_mapping = {
