@@ -121,8 +121,6 @@ def diagnosis_page():
     st.title("性格診断アプリ")
     st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
 
-    # 名前入力欄
-    name = st.text_input("お名前を入力してください", key="name")
     
 
     categories = {
@@ -141,6 +139,9 @@ def diagnosis_page():
                 options.append("どちらでもない")
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
+
+    # 名前入力欄
+    name = st.text_input("お名前を入力してください", key="name")
             
     if st.button("診断を実行"):
         # 名前が入力されていない場合、エラーを表示して中断
