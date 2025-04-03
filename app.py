@@ -10,10 +10,6 @@ st.markdown("""
         .question {
             margin-bottom: 0px;  /* 質問と質問の間隔を詰める */
         }
-        .radio-group {
-            margin-top: 0px !important;  /* ラジオボタンの間隔を詰める */
-            margin-bottom: 0px !important;
-        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -176,7 +172,8 @@ def diagnosis_page():
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
             options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
-
+           
+            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
             
     # 名前入力欄
@@ -218,4 +215,3 @@ def main():
         diagnosis_page()
 
 if __name__ == "__main__":
-    main()
