@@ -165,7 +165,7 @@ def diagnosis_page():
     }
 
     responses = []
-
+    options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
 
     # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
