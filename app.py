@@ -103,7 +103,6 @@ def calculate_result(answers, label1, label2, label3):
     score_mapping = {
         "当てはまる": 2,
         "やや当てはまる": 1,
-        "どちらでもない": 0,
         "あまり当てはまらない": -1,
         "当てはまらない": -2,
     }
