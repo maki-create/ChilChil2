@@ -174,9 +174,10 @@ def diagnosis_page():
     responses = []
     for category, questions in categories.items():
         for idx, q in enumerate(questions):
+        st.markdown(f"<div class='question'>{category}</div>", unsafe_allow_html=True)  # カテゴリーを追加
             st.write(f"**{q}**")
             options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
-            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True, help="ラジオボタン")  # ラジオボタンを追加
+
             responses.append(response)
             
     # 名前入力欄
