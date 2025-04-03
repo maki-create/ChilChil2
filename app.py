@@ -175,18 +175,22 @@ for category, questions in categories.items():
         )
         answers.append(answer)
 
-    # 名前入力欄
-    name = st.text_input("お名前を入力してください", key="name")
-            
-    if st.button("診断を実行"):
-        # 名前が入力されていない場合、エラーを表示して中断
-        if not st.session_state["name"]:
-            st.error("お名前を入力してください。")
-            return
-            
+   # 名前入力欄
+name = st.text_input("お名前を入力してください", key="name")
+
+if st.button("診断を実行"):
+    # 名前が入力されていない場合、エラーを表示して中断
+    if not name:
+        st.error("お名前を入力してください。")
+        st.stop()  # return の代わり
+
+# 回答のリスト
+responses = []  # ここで responses を定義
+
 if len(responses) < 36:
-        st.error("全ての質問に回答してください")
-        return
+    st.error("全ての質問に回答してください")
+    st.stop()  # return の代わり
+
 
         final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
