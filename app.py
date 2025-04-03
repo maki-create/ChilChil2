@@ -166,7 +166,7 @@ def diagnosis_page():
 
     responses = []
     for category, questions in categories.items():
-    st.subheader(category)
+        st.subheader(category)
     for question in questions:
         answer = st.radio(
             question,
