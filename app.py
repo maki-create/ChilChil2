@@ -8,7 +8,11 @@ st.markdown("""
     <style>
         section[data-testid="stSidebar"] {display: none;}
         .question {
-            margin-bottom: 300px;  /* 質問と質問の間隔を詰める */
+            margin-bottom: 0px;  /* 質問と質問の間隔を詰める */
+        }
+        .radio-group {
+            margin-top: 0px !important;  /* ラジオボタンの間隔を詰める */
+            margin-bottom: 0px !important;
         }
     </style>
     """, unsafe_allow_html=True)
