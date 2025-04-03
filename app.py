@@ -121,7 +121,7 @@ def calculate_result(answers, label1, label2, label3):
 
 def diagnosis_page():
     st.title("性格診断アプリ")
-    st.write("各質問に対して「当てはまる」「当てはまらない」「どちらでもない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
+    st.write("各質問に対して「当てはまる」「当てはまらない」「やや当てはまる」「あまり当てはまらない」の中から選んでください。")
 
     
 
