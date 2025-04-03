@@ -164,6 +164,7 @@ def diagnosis_page():
         "(36)グッズが届いても何を買ったか覚えていない"]
     }
 
+    responses = []
     for category, questions in categories.items():
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
@@ -172,8 +173,6 @@ def diagnosis_page():
                 options.append("どちらでもない")
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
-
-    responses = []
 
     # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
