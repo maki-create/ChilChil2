@@ -165,15 +165,14 @@ def diagnosis_page():
     }
 
     responses = []
-for category, questions in categories.items():
-    st.subheader(category)
-    for question in questions:
-        answer = st.radio(
-            question,
-            ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
-            index=None  # 初期値を未選択にする（必要なら）
-        )
-        answers.append(answer)
+    for category, questions in categories.items():
+        for idx, q in enumerate(questions):
+            st.write(f"**{q}**")
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
+            if idx not in [0, 9, 18, 27, 36]:  
+                options.append("どちらでもない")
+            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
+            responses.append(response)
 
     # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
@@ -182,12 +181,11 @@ for category, questions in categories.items():
         # 名前が入力されていない場合、エラーを表示して中断
         if not st.session_state["name"]:
             st.error("お名前を入力してください。")
-            st.stop()
+            return
             
-if len(responses) < 36:
-        st.error("全ての質問に回答してください")
-        st.stop()
-        
+        if len(responses) < 36:
+            st.error("全ての質問に回答してください")
+            return
 
         final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
@@ -215,4 +213,4 @@ def main():
         diagnosis_page()
 
 if __name__ == "__main__":
-    main()
+    main()で、選択肢の分からないを消してください
