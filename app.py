@@ -165,10 +165,10 @@ def diagnosis_page():
     }
 
     responses = []
-    for category, questions in categories.items():
-        st.subheader(category)
-    for question in questions:
-        answer = st.radio(
+for category, questions in categories.items():
+    st.subheader(category)
+for question in questions:
+    answer = st.radio(
             question,
             ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
             index=None  # 初期値を未選択にする（必要なら）
