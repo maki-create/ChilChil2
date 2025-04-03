@@ -164,48 +164,46 @@ def diagnosis_page():
         "(36)グッズが届いても何を買ったか覚えていない"]
     }
 
-    responses = []
-for category, questions in categories.items():
-    st.subheader(category)
-for question in questions:
-    answer = st.radio(
-            question,
-            ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
-            index=None  # 初期値を未選択にする（必要なら）
-        )
-    answers.append(answer)
+    responses = []  # ここでリストを初期化
 
-   # 名前入力欄
-name = st.text_input("お名前を入力してください", key="name")
+    for category, questions in categories.items():
+        st.subheader(category)
+        for question in questions:
+            answer = st.radio(
+                question,
+                ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
+                index=None  # 初期値を未選択にする（必要なら）
+            )
+            responses.append(answer)  # 各回答をリストに追加
 
-if st.button("診断を実行"):
-    # 名前が入力されていない場合、エラーを表示して中断
-    if not name:
-        st.error("お名前を入力してください。")
-        st.stop()  # return の代わり
+    # 名前入力欄
+    name = st.text_input("お名前を入力してください", key="name")
 
-# 回答のリスト
-responses = []  # ここで responses を定義
+    if st.button("診断を実行"):
+        # 名前が入力されていない場合、エラーを表示して中断
+        if not name:
+            st.error("お名前を入力してください。")
+            st.stop()  # return の代わり
 
-if len(responses) < 36:
-    st.error("全ての質問に回答してください")
-    st.stop()  # return の代わり
+        if len(responses) < 36:
+            st.error("全ての質問に回答してください")
+            st.stop()  # return の代わり
 
-
-    final_result = (
+        final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
             f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からない')}"
             f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からない')}"
             f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からない')}"
         )
 
-    # 診断結果番号を生成
-    diagnosis_id = random.randint(10000000, 99999999)
-    st.session_state["diagnosis_id"] = diagnosis_id
+        # 診断結果番号を生成
+        diagnosis_id = random.randint(10000000, 99999999)
+        st.session_state["diagnosis_id"] = diagnosis_id
 
         # スプレッドシートに名前と診断結果番号を記録
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    sheet.append_row([now, st.session_state["name"], diagnosis_id, final_result] + responses)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        sheet.append_row([now, st.session_state["name"], diagnosis_id, final_result] + responses)
+
         
     st.session_state["final_result"] = final_result
     st.session_state["result_page"] = True
