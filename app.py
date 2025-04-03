@@ -213,4 +213,4 @@ def main():
         diagnosis_page()
 
 if __name__ == "__main__":
-    main()で、選択肢の分からないを消してください
+    main()
