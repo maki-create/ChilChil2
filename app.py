@@ -172,33 +172,6 @@ def diagnosis_page():
            
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
-
-    # スタイルを設定して余白を調整
-st.markdown("""
-    <style>
-        .question {
-            margin-bottom: 0px;  /* 質問とラジオボタン間の余白をなくす */
-        }
-        .radio-container {
-            margin-top: 0px;  /* ラジオボタンの上の余白をなくす */
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-# 質問と回答項目を近づける部分のコード
-for category, questions in categories.items():
-    for idx, q in enumerate(questions):
-        # 質問を表示（CSSクラスを適用）
-        st.markdown(f'<p class="question"><strong>{q}</strong></p>', unsafe_allow_html=True)
-        
-        # 回答のラジオボタンを表示（CSSクラスを適用）
-        st.markdown(f'<div class="radio-container">', unsafe_allow_html=True)
-        response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
-        st.markdown("</div>", unsafe_allow_html=True)  # ラジオボタンのdivタグ閉じる
-
-        responses.append(response)
-
-
             
     # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
