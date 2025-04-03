@@ -176,7 +176,7 @@ def diagnosis_page():
             )
             responses.append(answer)  # 各回答をリストに追加
 
-    # 名前入力欄
+ # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
 
     if st.button("診断を実行"):
@@ -200,14 +200,15 @@ def diagnosis_page():
         diagnosis_id = random.randint(10000000, 99999999)
         st.session_state["diagnosis_id"] = diagnosis_id
 
-        # スプレッドシートに名前と診断結果番号を記録
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sheet.append_row([now, st.session_state["name"], diagnosis_id, final_result] + responses)
+        # スプレッドシートに名前と診断結果、診断結果番号を追記
+        row = [name, final_result, diagnosis_id, str(datetime.now())]
+        sheet.append_row(row)
 
-        
-    st.session_state["final_result"] = final_result
-    st.session_state["result_page"] = True
-    st.experimental_rerun()  # 結果ページにリダイレクト
+        st.session_state["final_result"] = final_result
+
+        # 結果ページに遷移
+        st.session_state["result_page"] = True
+        st.experimental_rerun()  # 結果ページに遷移するために再ロード
 
 
 def main():
