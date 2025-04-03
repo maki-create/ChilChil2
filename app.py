@@ -164,30 +164,29 @@ def diagnosis_page():
         "(36)グッズが届いても何を買ったか覚えていない"]
     }
 
-    responses = []  # ここでリストを初期化
+    responses = []
+for category, questions in categories.items():
+    st.subheader(category)
+    for question in questions:
+        answer = st.radio(
+            question,
+            ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
+            index=None  # 初期値を未選択にする（必要なら）
+        )
+        answers.append(answer)
 
-    for category, questions in categories.items():
-        st.subheader(category)
-        for question in questions:
-            answer = st.radio(
-                question,
-                ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
-                index=1 # 初期値を未選択にする（必要なら）
-            )
-            responses.append(answer)  # 各回答をリストに追加
-
- # 名前入力欄
+    # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
-
+            
     if st.button("診断を実行"):
         # 名前が入力されていない場合、エラーを表示して中断
-        if not name:
+        if not st.session_state["name"]:
             st.error("お名前を入力してください。")
-            st.stop()  # return の代わり
-
-        if len(responses) < 36:
-            st.error("全ての質問に回答してください")
-            st.stop()  # return の代わり
+return
+            
+if len(responses) < 36:
+        st.error("全ての質問に回答してください")
+        return
 
         final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
@@ -200,16 +199,13 @@ def diagnosis_page():
         diagnosis_id = random.randint(10000000, 99999999)
         st.session_state["diagnosis_id"] = diagnosis_id
 
-        # スプレッドシートに名前と診断結果、診断結果番号を追記
-        row = [name, final_result, diagnosis_id, str(datetime.now())]
-        sheet.append_row(row)
-
+        # スプレッドシートに名前と診断結果番号を記録
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        sheet.append_row([now, st.session_state["name"], diagnosis_id, final_result] + responses)
+        
         st.session_state["final_result"] = final_result
-
-        # 結果ページに遷移
         st.session_state["result_page"] = True
-        st.experimental_rerun()  # 結果ページに遷移するために再ロード
-
+        st.rerun()
 
 def main():
     if st.session_state.get("result_page", False):
