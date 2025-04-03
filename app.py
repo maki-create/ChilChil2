@@ -186,7 +186,7 @@ for category, questions in categories.items():
             
 if len(responses) < 36:
         st.error("全ての質問に回答してください")
-        return
+        
 
         final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
