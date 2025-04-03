@@ -8,7 +8,7 @@ st.markdown("""
     <style>
         section[data-testid="stSidebar"] {display: none;}
         .question {
-            margin-bottom: 0px;  /* 質問と質問の間隔を詰める */
+            margin-bottom: 10px;  /* 質問と質問の間隔を詰める */
         }
     </style>
     """, unsafe_allow_html=True)
