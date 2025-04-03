@@ -192,24 +192,24 @@ if len(responses) < 36:
     st.stop()  # return の代わり
 
 
-        final_result = (
+    final_result = (
             f"{calculate_result(responses[0:9], 'E', 'I', '意味が分からない')}"
             f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からない')}"
             f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からない')}"
             f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からない')}"
         )
 
-        # 診断結果番号を生成
-        diagnosis_id = random.randint(10000000, 99999999)
-        st.session_state["diagnosis_id"] = diagnosis_id
+    # 診断結果番号を生成
+    diagnosis_id = random.randint(10000000, 99999999)
+    st.session_state["diagnosis_id"] = diagnosis_id
 
         # スプレッドシートに名前と診断結果番号を記録
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sheet.append_row([now, st.session_state["name"], diagnosis_id, final_result] + responses)
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    sheet.append_row([now, st.session_state["name"], diagnosis_id, final_result] + responses)
         
-        st.session_state["final_result"] = final_result
-        st.session_state["result_page"] = True
-        st.rerun()
+    st.session_state["final_result"] = final_result
+    st.session_state["result_page"] = True
+    st.rerun()
 
 def main():
     if st.session_state.get("result_page", False):
