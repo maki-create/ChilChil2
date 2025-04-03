@@ -184,7 +184,7 @@ for category, questions in categories.items():
             st.error("お名前を入力してください。")
 return
             
-    if len(responses) < 36:
+if len(responses) < 36:
         st.error("全ての質問に回答してください")
         return
 
