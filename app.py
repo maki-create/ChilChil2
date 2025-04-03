@@ -182,11 +182,11 @@ for category, questions in categories.items():
         # 名前が入力されていない場合、エラーを表示して中断
         if not st.session_state["name"]:
             st.error("お名前を入力してください。")
-            return
+            st.stop()
             
 if len(responses) < 36:
         st.error("全ての質問に回答してください")
-        return
+        st.stop()
         
 
         final_result = (
