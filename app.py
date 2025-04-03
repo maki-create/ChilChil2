@@ -15,7 +15,7 @@ st.markdown("""
             margin-bottom: 0px !important;  /* ラジオボタンの下のスペースを詰める */
         }
         .stRadio {
-            margin-top: -10px !important;
+            margin-top: -40px !important;
             margin-bottom: 0px !important;  /* ラジオボタンの間隔を縮める */
         }
     </style>
