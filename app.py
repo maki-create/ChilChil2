@@ -175,6 +175,11 @@ def diagnosis_page():
            
             response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
             responses.append(response)
+            # 質問と回答を表示
+            st.markdown(f"""
+                <div style="margin-bottom: 5px;">{q}</div>
+                <div style="margin-bottom: 5px;">{response}</div>
+            """, unsafe_allow_html=True)
             
     # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
