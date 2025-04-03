@@ -173,7 +173,6 @@ def diagnosis_page():
 
     responses = []
     for category, questions in categories.items():
-        st.markdown(f"<div class='question'>{category}</div>", unsafe_allow_html=True)  # カテゴリーを追加
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
             options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
