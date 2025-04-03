@@ -164,6 +164,15 @@ def diagnosis_page():
         "(36)グッズが届いても何を買ったか覚えていない"]
     }
 
+    for category, questions in categories.items():
+        for idx, q in enumerate(questions):
+            st.write(f"**{q}**")
+            options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
+            if idx not in [0, 9, 18, 27, 36]:  
+                options.append("どちらでもない")
+            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
+            responses.append(response)
+
     responses = []
 
     # 名前入力欄
