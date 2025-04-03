@@ -68,8 +68,13 @@ def result_page():
 
     st.write(f"診断結果番号: {diagnosis_id}")
 
-    # GoogleフォームURL（パラメータ付き）
-    google_form_url = f"https://docs.google.com/forms/d/e/1FAIpQLScnQ2px9H6bBa_oFc1J1L0CwFBpwqjx9Lx8PtzpTEYWdlG04w/viewform?usp=pp_url&entry.2083747518={st.session_state['name']}&entry.1395543321	={diagnosis_id}"
+    google_form_url = (
+        f"https://docs.google.com/forms/d/e/1FAIpQLScnQ2px9H6bBa_oFc1J1L0CwFBpwqjx9Lx8PtzpTEYWdlG04w/viewform?"
+        f"usp=pp_url&entry.2083747518={st.session_state['name']}"
+        f"&entry.1395543321={diagnosis_id}"
+        f"&entry.987654321={result_name}"
+    )
+
 
     st.markdown(
         f"""
