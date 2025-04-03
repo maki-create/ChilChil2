@@ -16,7 +16,7 @@ st.markdown("""
         }
         .stRadio {
             margin-top: -40px !important;
-            margin-bottom: 0px !important;  /* ラジオボタンの間隔を縮める */
+            margin-bottom: 20px !important;  /* ラジオボタンの間隔を縮める */
         }
     </style>
     """, unsafe_allow_html=True)
