@@ -207,7 +207,8 @@ def diagnosis_page():
         
     st.session_state["final_result"] = final_result
     st.session_state["result_page"] = True
-    st.rerun()
+    st.experimental_rerun()  # 結果ページにリダイレクト
+
 
 def main():
     if st.session_state.get("result_page", False):
