@@ -172,7 +172,7 @@ def diagnosis_page():
             answer = st.radio(
                 question,
                 ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
-                index=None  # 初期値を未選択にする（必要なら）
+                index=1 # 初期値を未選択にする（必要なら）
             )
             responses.append(answer)  # 各回答をリストに追加
 
