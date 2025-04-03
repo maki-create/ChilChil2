@@ -169,11 +169,7 @@ def diagnosis_page():
         for idx, q in enumerate(questions):
             st.write(f"**{q}**")
             options = ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"]
-            if idx not in [0, 9, 18, 27, 36]:  
-                options.append("どちらでもない")
-            response = st.radio("", options, key=f"{category}_{idx}", horizontal=True)
-            responses.append(response)
-
+            
     # 名前入力欄
     name = st.text_input("お名前を入力してください", key="name")
             
