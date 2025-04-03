@@ -173,7 +173,7 @@ for question in questions:
             ["当てはまる", "やや当てはまる", "あまり当てはまらない", "当てはまらない"],  # 修正済み
             index=None  # 初期値を未選択にする（必要なら）
         )
-        answers.append(answer)
+    answers.append(answer)
 
    # 名前入力欄
 name = st.text_input("お名前を入力してください", key="name")
