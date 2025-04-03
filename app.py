@@ -70,7 +70,7 @@ def result_page():
 
     google_form_url = (
         f"https://docs.google.com/forms/d/e/1FAIpQLScnQ2px9H6bBa_oFc1J1L0CwFBpwqjx9Lx8PtzpTEYWdlG04w/viewform?"
-        f"usp=pp_url&entry.2083747518={st.session_state['name']}"
+        f"usp=pp_url&entry.1420480324={st.session_state['name']}"
         f"&entry.1395543321={diagnosis_id}"
         f"&entry.1270609001={result_name}"
     )
