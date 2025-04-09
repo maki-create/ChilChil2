@@ -118,17 +118,26 @@ def calculate_result(answers, label1, label2, label3):
         "まったく当てはまらない": -2,
     }
 
-    total_score = sum(score_mapping[ans] for ans in answers)
+    total_score = sum(score_mapping.get(ans, 0) for ans in answers)
 
     if total_score == 0 and answers:
-        total_score = score_mapping.get(answers[0], 0)
-
-    if total_score > 0:
-        return label1
-    elif total_score < 0:
-        return label2
+        count_positive = answers.count("とても当てはまる")
+        count_negative = answers.count("まったく当てはまらない")
+        
+        if count_positive > count_negative:
+            return label1
+        elif count_negative > count_positive:
+            return label2
+        else:
+            return label3
     else:
-        return label3
+        if total_score > 0:
+            return label1
+        elif total_score < 0:
+            return label2
+        else:
+            return label3
+
 
 def diagnosis_page():
     st.title("性格診断アプリ")
