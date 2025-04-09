@@ -87,27 +87,27 @@ def result_page():
     )
 
 
-    # st.markdown(
-        # f"""
+     st.markdown(
+         f"""
+         <div style="text-align: center; margin-top: 30px;">
+             <a href="{google_form_url}" target="_blank">
+                 <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                     アンケートに進む
+                 </button>
+             </a>
+         </div>
+         """, unsafe_allow_html=True)
+
+   #  st.markdown(
+       #  """
         # <div style="text-align: center; margin-top: 30px;">
-           #  <a href="{google_form_url}" target="_blank">
-               #  <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
-                   #  アンケートに進む
+            # <a href="https://chilchil2-qxehnzkrhvqchpqqgjsgum.streamlit.app/" target="_blank">
+              #   <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
+                   #  元のページに戻る
                 # </button>
            #  </a>
        #  </div>
        #  """, unsafe_allow_html=True)
-
-    st.markdown(
-        """
-        <div style="text-align: center; margin-top: 30px;">
-            <a href="https://chilchil2-qxehnzkrhvqchpqqgjsgum.streamlit.app/" target="_blank">
-                <button style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; cursor:pointer;">
-                    元のページに戻る
-                </button>
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
 
 
 def calculate_result(answers, label1, label2, label3):
