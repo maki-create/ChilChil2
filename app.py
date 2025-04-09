@@ -87,7 +87,7 @@ def result_page():
     )
 
 
-     st.markdown(
+    st.markdown(
          f"""
          <div style="text-align: center; margin-top: 30px;">
              <a href="{google_form_url}" target="_blank">
