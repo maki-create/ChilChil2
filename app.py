@@ -140,7 +140,7 @@ def calculate_result(answers, label1, label2, label3):
 
 
 def diagnosis_page():
-    st.title("ヲタクタイプ診断")
+    st.title("オタクタイプ診断")
     st.write("各質問に対して「とても当てはまる」「やや当てはまる」「あまり当てはまらない」「まったく当てはまらない」の中から選んでください。")
 
     
