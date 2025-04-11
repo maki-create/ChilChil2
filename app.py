@@ -194,12 +194,12 @@ def diagnosis_page():
             responses.append(response)
             
     # 名前入力欄
-    name = st.text_input("お名前を入力してください", key="name")
+    name = st.text_input("お名前（ちるちるユーザー名）を入力してください", key="name")
             
     if st.button("診断を実行"):
         # 名前が入力されていない場合、エラーを表示して中断
         if not st.session_state["name"]:
-            st.error("お名前を入力してください。")
+            st.error("お名前（ちるちるユーザー名）を入力してください")
             return
             
         if len(responses) < 36:
