@@ -208,7 +208,7 @@ def diagnosis_page():
             return
 
         final_result = (
-            f"{calculate_result(responses[0,4,8,12,16,20,24,28,32], 'E', 'I', '意味が分からない')}"
+            f"{calculate_result(responses[i] for i in [0,4,8,12,16,20,24,28,32], 'E', 'I', '意味が分からない')}"
             f"{calculate_result(responses[9:18], 'S', 'N', '意味が分からない')}"
             f"{calculate_result(responses[18:27], 'F', 'T', '意味が分からない')}"
             f"{calculate_result(responses[27:36], 'P', 'J', '意味が分からない')}"
