@@ -80,7 +80,7 @@ def result_page():
     st.write(f"診断結果番号: {diagnosis_id}")
 
     google_form_url = (
-        f"https://forms.gle/R9nvC2zaAz53t8i7A"
+        f"https://docs.google.com/forms/d/e/1FAIpQLSe3HaEvt8A206-25CSmJMUPeqUd3tD74xgEBoijslLVEu4Wzg/viewform?usp=dialog"
         f"usp=pp_url&entry.18619849={st.session_state['name']}"
         f"&entry.1966712441={diagnosis_id}"
         f"&entry.1541743808={result_name}"
