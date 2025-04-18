@@ -35,7 +35,7 @@ client = gspread.authorize(creds)
 
 # Googleスプレッドシートを開く
 spreadsheet_id = st.secrets["google_credentials"]["spreadsheet_id"]
-sheet = client.open_by_key(spreadsheet_id).sheet1  # 1枚目のシートを選択
+sheet = client.open_by_key(spreadsheet_id).sheet2  # 1枚目のシートを選択
 
 # セッションステートの初期化（エラー回避）
 st.session_state.setdefault("final_result", None)
