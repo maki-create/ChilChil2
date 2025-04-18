@@ -81,9 +81,9 @@ def result_page():
 
     google_form_url = (
         f"https://docs.google.com/forms/d/e/1FAIpQLSe3HaEvt8A206-25CSmJMUPeqUd3tD74xgEBoijslLVEu4Wzg/viewform?usp=dialog"
-        f"usp=pp_url&entry.186198495={st.session_state['name']}"
+        f"usp=pp_url&entry.1541743808={st.session_state['name']}"
         f"&entry.1966712441={diagnosis_id}"
-        f"&entry.1541743808={result_name}"
+        f"&entry.186198495={result_name}"
     )
 
 
